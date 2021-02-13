@@ -1,6 +1,6 @@
-# De-Formed Validations
+# @De-Formed Validations
 
-De-Formed Validations is a react hook that offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
+@De-Formed Validations is a react hook that offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
 ## Why Use De-Formed?
 
