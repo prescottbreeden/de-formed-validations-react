@@ -1,53 +1,52 @@
 # De-Formed Validations
 
-De-Formed Validations is a robust and unopinionated API to manage form and data validations in JavaScript and React. With only a handful of properties to learn, de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
+De-Formed Validations is a react hook that offers a robust and unopinionated API to manage form and data validations. With only a handful of properties to learn, de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
 ## Why Use De-Formed?
 
-1. Modular and Composable
+1. Modular, Composable, and Scalable.
 2. Unopinionated
 3. Easy to use and test.
-4. Works for Client or Server.
 
 ## Install
 ```
-yarn add de-formed-validations
+yarn add @de-formed
 ```
 ```
-npm install de-formed-validations
+npm install @de-formed
 ```
 ## React Usage
 
 ### Step 1: Create a file to define your validations.
 ```ts
 // PersonValidation.ts
-import { useValidation } from 'de-formed-validations';
+import { useValidation } from '@de-formed';
 
 export const PersonValidation = () => {
   return useValidation<Person>({
     firstName: [
       {
-        errorMessage: 'First Name is required.',
-        validation: (val: string) => val.length > 0,
+        error: 'First Name is required.',
+        validation: (person: Person) => person.firstName.length > 0,
       },
       {
-        errorMessage: 'First Name cannot be longer than 20 characters.',
-        validation: (val: string) => val.length <= 20,
+        error: 'First Name cannot be longer than 20 characters.',
+        validation: (person: Person) => person.firstName.length <= 20,
       },
     ],
     lastName: [
       {
-        errorMessage: 'Last Name is required.',
-        validation: (val: string) => val.length > 0,
+        error: 'Last Name is required.',
+        validation: (person: Person) => person.lastName.length > 0,
       },
       {
-        errorMessage: 'Last Name cannot be longer than 20 characters.',
-        validation: (val: string) => val.length <= 20,
+        error: 'Last Name cannot be longer than 20 characters.',
+        validation: (person: Person) => person.lastName.length <= 20,
       },
       {
-        errorMessage: 'Must be Ross if fist name is Bob.',
-        validation: (val: string, state: Person) => {
-          return state.firstName === 'Bob' ? val === 'Ross' : true;
+        error: 'Must be Ross if fist name is Bob.',
+        validation: (person: Person) => {
+          return person.firstName === 'Bob' ? person.lastName === 'Ross' : true;
         },
       },
     ],
@@ -102,60 +101,6 @@ export const PersonForm = ({ person, onChange }) => {
   );
 };
 ```
-## Node/Express or Vanilla JavaScript Usage
-
-### Step 1: Create a file to define your validations.
-```js
-// PersonValidation.js
-import { Validation } from 'de-formed-validations';
-
-export const PersonValidation = () => {
-  return new Validation({
-    firstName: [
-      {
-        errorMessage: 'First Name is required.',
-        validation: val => val.length > 0,
-      },
-      {
-        errorMessage: 'First Name cannot be longer than 20 characters.',
-        validation: val => val.length <= 20,
-      },
-    ],
-    lastName: [
-      {
-        errorMessage: 'Last Name is required.',
-        validation: val => val.length > 0,
-      },
-      {
-        errorMessage: 'Last Name cannot be longer than 20 characters.',
-        validation: val => val.length <= 20,
-      },
-      {
-        errorMessage: 'Must be Ross if fist name is Bob.',
-        validation: (val, person) => {
-          return person.firstName === 'Bob' ? val === 'Ross' : true;
-        },
-      },
-    ],
-  });
-};
-```
-
-### Step 2: Import as needed
-```js
-// controller.js
-const PersonValidation = require('./PersonValidation');
-
-app.use("/", (req, res) => {
-  const v = PersonValidation();
-  return v.validateAll(req.body)
-    ? res.json('success')
-    : res.json(v.validationState);
-});
-```
-### Double-Trouble
-If you are using a Node server, you can send the validationState back to the Client with the response and the UI can then call ```forceValidationState``` to automatically render any server validation errors back to the user.
-
 ## A Different Approach
 De-formed generates validations by calling an array of functions that define the exact requirements for a given property. There are no special properties to define (e.g. type, length, max, min, etc). We avoided this because it requires de-formed to make assumptions about the data it is recieving which can be a common runtime error. It also forces redundant error messages because if there is only one error message a user will be shown, then just write one function that handles the validation and you're done. Ultimately, you know your data and de-formed does not, and our goal is make validations that are as unopinionated as possible; therefore, each function returns either true or false, and if it fails, it generates the error message associated with that function. In this way, de-formed allows you to write validations from the perspective of what error messages are users supposed to see and then write a function that does that thing.
 
