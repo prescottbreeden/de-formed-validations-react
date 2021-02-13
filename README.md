@@ -5,8 +5,8 @@
 ## Why Use De-Formed?
 
 1. Modular, Composable, and Scalable.
-2. Unopinionated.
-3. Lightweight and Suckless (less than 2kb gzipped).
+2. Unopinionated and Customizable.
+3. Lightweight (1.6 kb gzipped).
 3. Easy to use and test.
 
 ## Install
