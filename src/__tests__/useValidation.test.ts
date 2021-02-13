@@ -320,6 +320,22 @@ describe('useValidation tests', () => {
         expect(output).toBe(false);
       });
     });
+    it('returns all failing validations', () => {
+      const { result } = renderHook(() => useValidation(schema));
+      act(() => {
+        result.current.validateAll(failingState);
+      });
+      expect(result.current.validationState).toStrictEqual({
+        name: {
+          errors: ["Cannot be bob."],
+          isValid: false,
+        },
+        age: {
+          errors: ['Must be 18'],
+          isValid: false,
+        }
+      });
+    });
 
     it('handles nested validation reductions', () => {
       const data = [defaultState, defaultState, defaultState];

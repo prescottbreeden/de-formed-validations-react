@@ -1,4 +1,4 @@
-import { __, defaultTo, gt, length, path } from 'ramda';
+import * as R from 'ramda';
 
 //  curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
 function curry(fn: any) {
@@ -21,13 +21,34 @@ export const compose = (...fns: any[]) => (...args: any[]) =>
 export const prop = curry((p: string, obj: any) => (obj ? obj[p] : undefined));
 
 export const isPropertyValid = <S>(property: keyof S): any => compose(
-  defaultTo(true),
-  path([property as any, 'isValid'])
+  R.defaultTo(true),
+  R.path([property as any, 'isValid'])
 );
 
 export const executeSideEffect = curry((f: any, x: any) => f(x) || x);
 
+// -- validation helper utils --
+// stringIsNotEmpty :: string -> boolean
 export const stringIsNotEmpty = compose(
-  gt(__, 0),
-  length,
+  R.gt(R.__, 0),
+  R.length,
+  R.trim
 );
+
+// stringIsLessThan :: number -> string -> boolean
+export const stringIsLessThan = curry((num: number, str: string) => {
+  return compose(
+    R.lt(R.__, num),
+    R.length,
+    R.trim
+  )(str);
+});
+
+// stringIsMoreThan :: number -> string -> boolean
+export const stringIsMoreThan = curry((num: number, str: string) => {
+  return compose(
+    R.gt(R.__, num),
+    R.length,
+    R.trim
+  )(str);
+});

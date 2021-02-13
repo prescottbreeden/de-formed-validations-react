@@ -1,18 +1,20 @@
 /// <reference types="react" />
-import { ValidateOnBlur, ValidateOnChange, ValidationSchema } from "./types";
+import { compose, prop, stringIsLessThan, stringIsMoreThan, stringIsNotEmpty } from './utilities';
+import { GetAllErrors, GetError, GetFieldValid, IsValid, ResetValidationState, Validate, ValidateAll, ValidateAllIfTrue, ValidateIfTrue, ValidateOnBlur, ValidateOnChange, ValidationSchema, ValidationState } from './types';
+export { compose, prop, stringIsLessThan, stringIsMoreThan, stringIsNotEmpty };
 export declare const useValidation: <S>(validationSchema: ValidationSchema<S>) => {
-    getAllErrors: (property: keyof S, vState?: any) => any;
-    getError: (property: keyof S, vState?: any) => any;
-    getFieldValid: (property: keyof S, vState?: any) => any;
-    isValid: (state?: any) => boolean;
-    resetValidationState: () => void;
-    setValidationState: import("react").Dispatch<any>;
-    validate: (property: keyof S, value: any) => any;
-    validateAll: (value: any, props?: string[]) => any;
-    validateAllIfTrue: (value: any, props?: string[]) => any;
-    validateIfTrue: (property: keyof S, value: any) => any;
+    getAllErrors: GetAllErrors<S>;
+    getError: GetError<S>;
+    getFieldValid: GetFieldValid<S>;
+    isValid: IsValid;
+    resetValidationState: ResetValidationState;
+    setValidationState: import("react").Dispatch<import("react").SetStateAction<ValidationState>>;
+    validate: Validate<S>;
+    validateAll: ValidateAll<S>;
+    validateAllIfTrue: ValidateAllIfTrue<S>;
+    validateIfTrue: ValidateIfTrue<S>;
     validateOnBlur: ValidateOnBlur<S>;
     validateOnChange: ValidateOnChange<S>;
-    validationErrors: never[];
-    validationState: any;
+    validationErrors: string[];
+    validationState: ValidationState;
 };

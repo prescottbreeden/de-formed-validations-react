@@ -19,20 +19,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useValidation = void 0;
+exports.useValidation = exports.stringIsNotEmpty = exports.stringIsMoreThan = exports.stringIsLessThan = exports.prop = exports.compose = void 0;
 const react_1 = require("react");
 const R = __importStar(require("ramda"));
 const maybe_1 = require("./maybe");
 const utilities_1 = require("./utilities");
+Object.defineProperty(exports, "compose", { enumerable: true, get: function () { return utilities_1.compose; } });
+Object.defineProperty(exports, "prop", { enumerable: true, get: function () { return utilities_1.prop; } });
+Object.defineProperty(exports, "stringIsLessThan", { enumerable: true, get: function () { return utilities_1.stringIsLessThan; } });
+Object.defineProperty(exports, "stringIsMoreThan", { enumerable: true, get: function () { return utilities_1.stringIsMoreThan; } });
+Object.defineProperty(exports, "stringIsNotEmpty", { enumerable: true, get: function () { return utilities_1.stringIsNotEmpty; } });
 exports.useValidation = (validationSchema) => {
     const createValidationsState = (schema) => {
         const buildState = (acc, key) => ({
             ...acc,
             [key]: { isValid: true, errors: [] },
         });
-        const state = maybe_1.maybe(schema)
-            .map(R.keys)
-            .map(R.reduce(buildState, {}));
+        const state = maybe_1.maybe(schema).map(R.keys).map(R.reduce(buildState, {}));
         return state.isJust ? state.join() : {};
     };
     const [validationState, setValidationState] = react_1.useState(createValidationsState(validationSchema));
@@ -40,7 +43,7 @@ exports.useValidation = (validationSchema) => {
     const updateValidationState = utilities_1.executeSideEffect(setValidationState);
     const resetValidationState = () => R.pipe(createValidationsState, setValidationState)(validationSchema);
     const updatePropertyOnState = R.curry((property, value) => {
-        const valueIsValid = R.pipe(utilities_1.prop("validation"), R.applyTo(value));
+        const valueIsValid = R.pipe(utilities_1.prop('validation'), R.applyTo(value));
         const getErrorOrNone = R.ifElse(valueIsValid, R.always(''), R.prop('error'));
         const state = maybe_1.maybe(validationSchema)
             .map(utilities_1.prop(property))
@@ -48,7 +51,7 @@ exports.useValidation = (validationSchema) => {
             .map(R.map(getErrorOrNone))
             .map(R.filter(utilities_1.stringIsNotEmpty))
             .map((errors) => ({ errors, isValid: !errors.length }))
-            .map(R.assoc(property, R.__, validationState));
+            .map(R.assoc(property, R.__, {}));
         return state.isJust ? state.join() : {};
     });
     const validate = (property, value) => maybe_1.maybe(value)
@@ -100,26 +103,22 @@ exports.useValidation = (validationSchema) => {
         return onChange(event);
     };
     const getAllErrors = (property, vState = validationState) => {
-        const errors = maybe_1.maybe(vState)
-            .map(utilities_1.prop(property))
-            .map(utilities_1.prop("errors"));
+        const errors = maybe_1.maybe(vState).map(utilities_1.prop(property)).map(utilities_1.prop('errors'));
         return errors.isJust ? errors.join() : [];
     };
     const getError = (property, vState = validationState) => {
         const error = maybe_1.maybe(vState)
             .map(utilities_1.prop(property))
-            .map(utilities_1.prop("errors"))
+            .map(utilities_1.prop('errors'))
             .map(R.head);
-        return error.isJust ? error.join() : "";
+        return error.isJust ? error.join() : '';
     };
     const getFieldValid = (property, vState = validationState) => {
-        const valid = maybe_1.maybe(vState)
-            .map(utilities_1.prop(property))
-            .map(utilities_1.prop("isValid"));
+        const valid = maybe_1.maybe(vState).map(utilities_1.prop(property)).map(utilities_1.prop('isValid'));
         return valid.isJust ? valid.join() : true;
     };
     const isValid = (state = validationState) => {
-        return R.reduce((acc, curr) => acc ? utilities_1.isPropertyValid(curr)(state) : acc, true, Object.keys(state));
+        return R.reduce((acc, curr) => (acc ? utilities_1.isPropertyValid(curr)(state) : acc), true, Object.keys(state));
     };
     const generateValidationErrors = (state) => {
         return R.reduce((acc, curr) => getError(curr) ? [...acc, getError(curr)] : acc, [], Object.keys(state));
