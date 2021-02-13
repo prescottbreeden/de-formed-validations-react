@@ -1,14 +1,12 @@
 {
-  "name": "de-formed-validations",
-  "description": "Function-based modular validations",
-  "author": "Amplify CP",
-  "version": "2.0.6",
+  "name": "@de-formed/react-validations",
+  "version": "1.0.0",
+  "description": "Modular, Scalable, Function-driven Validations",
   "main": "dist/index",
+  "repository": "https://github.com/prescottbreeden/de-formed-validations-react.git",
+  "author": "prescottbreeden <prescott.breeden@gmail.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/prescottbreeden/de-formed-validations"
-  },
+  "private": false,
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage --watchAll",
@@ -56,15 +54,14 @@
     ]
   },
   "keywords": [
-    "validations",
+    "composable",
     "data",
     "form",
-    "validation",
-    "react",
-    "node",
+    "functional",
     "hook",
-    "frontend",
-    "backend",
-    "modular"
+    "modular",
+    "react",
+    "validation",
+    "validations"
   ]
 }
