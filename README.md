@@ -10,10 +10,10 @@ De-Formed Validations is a react hook that offers a robust and unopinionated API
 
 ## Install
 ```
-yarn add @de-formed
+yarn add @de-formed/react-validations
 ```
 ```
-npm install @de-formed
+npm i @de-formed/react-validations
 ```
 ## React Usage
 
