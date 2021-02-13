@@ -16,7 +16,7 @@ yarn add @de-formed/react-validations
 ```
 npm i @de-formed/react-validations
 ```
-## React Usage
+## Basic Usage
 
 ### Step 1: Create a file to define your validations.
 ```ts
@@ -109,11 +109,11 @@ Importantly, all validations are de-coupled from your form architecture allowing
 
 ## Documentation
 
-Check out the [documentation](https://github.com/prescottbreeden/de-formed-validations/wiki/Docs).
+Check out the [documentation](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Docs).
 
 ## Examples
 
-More [examples](https://github.com/prescottbreeden/de-formed-validations/wiki/Examples) and CodeSandboxes.
+More [examples](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Examples) and CodeSandboxes.
 
 ## Coverage
 ![coverage](https://github.com/prescottbreeden/de-formed-validations-react/blob/master/coverage.png?raw=true)
