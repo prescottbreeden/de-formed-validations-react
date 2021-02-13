@@ -1,0 +1,70 @@
+{
+  "name": "de-formed-validations",
+  "description": "Function-based modular validations",
+  "author": "Amplify CP",
+  "version": "2.0.6",
+  "main": "dist/index",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prescottbreeden/de-formed-validations"
+  },
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage --watchAll",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "yarn tsc",
+    "prepublishOnly": "yarn test",
+    "preversion": "yarn lint",
+    "version": "yarn format && git add .",
+    "postversion": "git push && git push --tags"
+  },
+  "dependencies": {
+    "@types/ramda": "^0.27.30",
+    "@types/react": "^16.9.52",
+    "ramda": "^0.27.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/react-hooks": "^3.4.1",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^26.0.14",
+    "@types/testing-library__dom": "^7.5.0",
+    "jest": "^26.5.3",
+    "prettier": "^2.1.2",
+    "react-test-renderer": "^16.13.1",
+    "ts-jest": "^26.4.1",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.0.3"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
+  "keywords": [
+    "validations",
+    "data",
+    "form",
+    "validation",
+    "react",
+    "node",
+    "hook",
+    "frontend",
+    "backend",
+    "modular"
+  ]
+}
