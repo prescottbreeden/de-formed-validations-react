@@ -28,26 +28,26 @@ export const PersonValidation = () => {
     firstName: [
       {
         error: 'First Name is required.',
-        validation: (person: Person) => person.firstName.length > 0,
+        validation: ({ firstName }) => firstName.length > 0,
       },
       {
         error: 'First Name cannot be longer than 20 characters.',
-        validation: (person: Person) => person.firstName.length <= 20,
+        validation: ({ firstName }) => firstName.length <= 20,
       },
     ],
     lastName: [
       {
         error: 'Last Name is required.',
-        validation: (person: Person) => person.lastName.length > 0,
+        validation: ({ lastName }) => lastName.length > 0,
       },
       {
         error: 'Last Name cannot be longer than 20 characters.',
-        validation: (person: Person) => person.lastName.length <= 20,
+        validation: ({ lastName }) => lastName.length <= 20,
       },
       {
         error: 'Must be Ross if fist name is Bob.',
-        validation: (person: Person) => {
-          return person.firstName === 'Bob' ? person.lastName === 'Ross' : true;
+        validation: ({ firstName, lastName }) => {
+          return firstName === 'Bob' ? lastName === 'Ross' : true;
         },
       },
     ],
@@ -102,6 +102,82 @@ export const PersonForm = ({ person, onChange }) => {
   );
 };
 ```
+## Schema Design for the FP folks
+```ts
+import { useValidation } from "@de-formed/react-validations";
+import * as R from "ramda";
+import { emailRegex } from "../constants";
+import { PersonalInformation } from "../types";
+
+const stringIsNotEmpty = R.compose(
+  R.gt(R.__, 0),
+  R.length,
+  R.split(""),
+  R.trim,
+  R.ifElse(R.equals(undefined), R.defaultTo(""), R.identity)
+);
+
+export const PersonalInformationValidation = () => {
+  return useValidation<PersonalInformation>({
+    firstName: [
+      {
+        error: "First Name is required.",
+        validation: R.compose(stringIsNotEmpty, R.prop("firstName")),
+      },
+    ],
+    lastName: [
+      {
+        error: "Last Name is required.",
+        validation: R.compose(stringIsNotEmpty, R.prop("lastName")),
+      },
+      {
+        error: "Last Name must be Ross.",
+        validation: R.ifElse(
+          R.compose(
+            R.equals("bob"),
+            R.toLower,
+            R.trim,
+            R.defaultTo(""),
+            R.prop<string, string>("firstName")
+          ),
+          R.compose(
+            R.equals("ross"),
+            R.toLower,
+            R.trim,
+            R.defaultTo(""),
+            R.prop<string, string>("lastName")
+          ),
+          R.always(true)
+        ),
+      },
+    ],
+    phoneNumber: [
+      {
+        error: "Phone Number must be 10 digits.",
+        validation: R.compose(
+          R.ifElse(R.gt(R.__, 0), R.equals(10), R.always(true)),
+          R.length,
+          R.split(""),
+          R.trim,
+          R.defaultTo(""),
+          R.prop<string, string>("phoneNumber")
+        ),
+      },
+    ],
+    email: [
+      {
+        error: "Email is required.",
+        validation: R.compose(stringIsNotEmpty, R.prop("email")),
+      },
+      {
+        error: "Must be a valid email.",
+        validation: R.compose(R.test(emailRegex), R.prop("email")),
+      },
+    ],
+  });
+};
+```
+
 ## A Different, Functional, Event Driven Approach
 One of the biggest differences you will notice with @De-formed is it has no property or state for the concept of "touched". The problem with touched is most concisely put in that it obstructs event customization around validations. If you are building validations around the user's behavior, it also happens to be a completely useless property. The documentation for @De-formed guides you through setting up validations that only remove errors on change events but validate on blur and submit; however, you can customize the behavior any way you wish.
 
