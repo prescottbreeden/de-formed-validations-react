@@ -105,7 +105,7 @@ export const PersonForm = ({ person, onChange }) => {
 ## A Different, Functional, Event Driven Approach
 One of the biggest differences you will notice with @De-formed is it has no property or state for the concept of "touched". The problem with touched is most concisely put in that it obstructs event customization around validations. If you are building validations around the user's behavior, it also happens to be a completely useless property. The documentation for @De-formed guides you through setting up validations that only remove errors on change events but validate on blur and submit; however, you can customize the behavior any way you wish.
 
-Importantly, all validations are de-coupled from your form architecture allowing them to be executed, reused, and composed together in any context necessary. Just define as many functions as you want in your schema and then execute them on whichever events you choose. This provides you with a function-based, modular approach to design validation patterns that meet your requirements without the hassle of managing the validation data yourself.
+Importantly, all validations are de-coupled from your form architecture allowing them to be executed, reused, and composed together in any context necessary. Ditch the form tag, define as many functions as you want in your schema with as many nested schemas as you like and then compose them all into a single form control and execute them on whichever events you choose. This provides you with a function-based, modular approach to design validation patterns that meet your requirements without the hassle of managing the validation data yourself.
 
 ## Documentation
 
