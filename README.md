@@ -102,6 +102,9 @@ export const PersonForm = ({ person, onChange }) => {
   );
 };
 ```
+
+***
+
 ## Schema Design for the FP folks
 ```ts
 import { useValidation } from "@de-formed/react-validations";
@@ -177,6 +180,197 @@ export const PersonalInformationValidation = () => {
   });
 };
 ```
+
+***
+
+## Composable Forms
+With validations abstracted to handle a single data layer, forms become composable once you seprate the form control from the form inputs. Feel free to read my blog with a link to an example code base: (link coming soon to a readme near you)
+
+### Form Inputs
+```js
+// Panda.form.js
+import * as R from "ramda";
+import React, { useEffect } from "react";
+import { FoodForm } from "../forms/Food.form";
+import { NameForm } from "../forms/Name.form";
+import { FriendForm } from "../forms/Friend.form";
+import { DynamicForm } from "../common/DynamicForm.common";
+import { replaceArrayItem, through } from "../utils/general";
+import { maybe } from "../utils/maybe";
+import { PandaValidations } from "../validations/Panda.validations";
+import { emptyFriend } from "../models/friend.model";
+
+export const PandaForm = ({
+  onChange,
+  data,
+  disabled,
+  submitFailed,
+  overrideValidationState,
+}) => {
+  // --[ dependencies ]--------------------------------------------------------
+  const v = PandaValidations();
+
+  // --[ component logic ]-----------------------------------------------------
+  // get :: string -> data[string]
+  const get = R.prop(R.__, data);
+
+  // updateModel[model] :: Partial<Panda> -> { Partial<Panda> }
+  const updateModel = {
+    name: R.assoc("name", R.__, data),
+    food: R.assoc("food", R.__, data),
+    friends: R.compose(
+      R.assoc("friends", R.__, data),
+      replaceArrayItem(get("friends"), "id")
+  ),
+  };
+
+  // validateChange :: string -> Partial<Panda> -> void
+  const validateChange = (name) =>
+    R.converge(v.validateIfTrue, [R.always(name), R.mergeRight(data)]);
+
+  // handleChange :: string -> Partial<Panda> -> void
+  const handleChange = (name) =>
+    through([
+      validateChange(name),
+      R.compose(onChange, updateModel[name]),
+    ]);
+
+  // addFriend :: () -> void
+  const addFriend = (_) =>
+    onChange({
+      ...data,
+      friends: [...get("friends"), emptyFriend()],
+    });
+
+  // removeFriend :: friend -> void
+  const removeFriend = (friend) => {
+    const friends = get("friends").filter((f) => f.id !== friend.id);
+    onChange({ ...data, friends });
+  };
+
+  // --[ lifecycle ]-----------------------------------------------------------
+  useEffect(() => {
+    if (submitFailed) {
+      v.validateAll(data);
+      maybe(overrideValidationState).map(v.forceValidationState);
+    }
+  }, [submitFailed, overrideValidationState]); // eslint-disable-line
+
+  return (
+    <>
+      <fieldset>
+        <legend>Panda.form.jsx</legend>
+        <NameForm
+          data={get("name")}
+          disabled={disabled}
+          onChange={handleChange("name")}
+          submitFailed={submitFailed}
+        />
+        <FoodForm
+          data={get("food")}
+          disabled={disabled}
+          onChange={handleChange("food")}
+          submitFailed={submitFailed}
+        />
+        <h2>Add friends for your panda</h2>
+        <DynamicForm
+          addForm={addFriend}
+          disabled={disabled}
+          entity="Friend"
+          form={FriendForm}
+          items={get("friends")}
+          formKey="id"
+          onChange={handleChange("friends")}
+          removeForm={removeFriend}
+          submitFailed={submitFailed}
+        />
+      </fieldset>
+    </>
+  );
+};
+```
+### Form Control
+```js
+// CreatePanda.component.js
+import * as R from "ramda";
+import React, { useState } from "react";
+import { emptyPanda } from "../models/panda.model";
+import { PandaValidations } from "../validations/Panda.validations";
+import { useToggle } from "../hooks/useToggle.hook";
+import { PandaForm } from "../forms/Panda.form";
+import { ValidationErrors } from "../common/ValidationErrors.common";
+import { through, trace } from "../utils/general";
+import { handleApiResponse, request } from "../utils/request";
+
+export const CreatePanda = ({ disabled }) => {
+  // --[ dependencies ]--------------------------------------------------------
+  const v = PandaValidations();
+
+  // --[ local state ]---------------------------------------------------------
+  const [panda, setPanda] = useState(emptyPanda());
+  const [
+    hasValidationErrors,
+    activateValidationErrors,
+    deactivateValidationErrors,
+  ] = useToggle(false);
+
+  // --[ component logic ]-----------------------------------------------------
+  // handleChange :: Panda -> void
+  const handleChange = through([
+    v.validateAllIfTrue,
+    setPanda
+  ]);
+
+  // handleSubmitResponse :: API JSON -> void
+  const handleSubmitResponse = handleApiResponse(v, activateValidationErrors);
+
+  // dispatchPayload :: Panda -> void
+  const dispatchPayload = async (payload) => {
+    request('panda', "POST", payload)
+      .then((res) => res.json())
+      .then(handleSubmitResponse)
+      .catch(trace("whoopsies"));
+  };
+
+  // onFailure :: Panda -> void
+  const onFailure = through([
+    trace("rendering front-end errors"),
+    activateValidationErrors,
+  ]);
+
+  // onSuccess :: Panda -> void
+  const onSuccess = through([
+    dispatchPayload,
+    deactivateValidationErrors
+  ]);
+
+  // handleSubmit :: Panda -> fn(Panda)
+  const handleSubmit = R.cond([
+    [v.validateAll, onSuccess],
+    [R.always(true), onFailure],
+  ]);
+
+  return (
+    <section>
+      <fieldset>
+        <legend>CreatePanda.component.jsx</legend>
+        <PandaForm
+          data={panda}
+          disabled={disabled}
+          onChange={handleChange}
+          submitFailed={hasValidationErrors}
+        />
+        <button disabled={disabled} onClick={() => handleSubmit(panda)}>
+          Submit
+        </button>
+        <ValidationErrors {...v} />
+      </fieldset>
+    </section>
+  );
+};
+```
+
+***
 
 ## A Different, Functional, Event Driven Approach
 One of the biggest differences you will notice with @De-formed is it has no property or state for the concept of "touched". The problem with touched is most concisely put in that it obstructs event customization around validations. If you are building validations around the user's behavior, it also happens to be a completely useless property. The documentation for @De-formed guides you through setting up validations that only remove errors on change events but validate on blur and submit; however, you can customize the behavior any way you wish.
