@@ -252,9 +252,9 @@ export const PandaForm = ({
   useEffect(() => {
     if (submitFailed) {
       v.validateAll(data);
-      maybe(overrideValidationState).map(v.forceValidationState);
+      maybe(overrideValidationState).map(v.setValidationState);
     }
-  }, [submitFailed, overrideValidationState]); // eslint-disable-line
+  }, [submitFailed, overrideValidationState, data]); // eslint-disable-line
 
   return (
     <>
