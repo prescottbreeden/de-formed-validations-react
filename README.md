@@ -1,6 +1,6 @@
 # @De-Formed Validations
 
-@De-Formed Validations is a react hook that offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
+@De-Formed Validations is a react hook that offers a robust and unopinionated event-driven API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
 ## Why Use De-Formed?
 
@@ -102,8 +102,8 @@ export const PersonForm = ({ person, onChange }) => {
   );
 };
 ```
-## A Different, Functional Approach
-@De-formed generates validations by calling an array of error/validation function objects that define the exact requirements for a given property. Just define the error you want to generate when a given function returns false and then bind the validation state to your DOM with the available interfaces. @De-formed aims to offer a higher level of customizability in validation behavior than other validations by providing the ability to read and manipulate the validation state outside of input events. Simply call or compose validation functions with the rest of your component logic to handle your business requirements without needing to sacrifice a goat or kidney to the Form-Gods.
+## A Different, Functional, Event Driven Approach
+One of the biggest differences you will notice with @De-formed is it has no property or state for the concept of "touched". The problem with touched is most concisely put in that it obstructs event customization around validations. If you are building validations around the user's behavior, it also happens to be a completely useless property. The documentation for @De-formed guides you through setting up validations that only remove errors on change events but validate on blur and submit; however, you can customize the behavior any way you wish.
 
 Importantly, all validations are de-coupled from your form architecture allowing them to be executed, reused, and composed together in any context necessary. Just define as many functions as you want in your schema and then execute them on whichever events you choose. This provides you with a function-based, modular approach to design validation patterns that meet your requirements without the hassle of managing the validation data yourself.
 
