@@ -64,6 +64,7 @@ import { usePersonValidation } from './usePersonValidation';
 
 export const PersonForm = ({ person, onChange }) => {
   const {
+    getError,
     validateAll,
     validateOnChange,
     validateOnBlur
@@ -85,7 +86,7 @@ export const PersonForm = ({ person, onChange }) => {
           onChange={validateOnChange(onChange, person)}
           value={person.firstName}
         />
-        {v.getError('firstName') && <p>{v.getError('firstName')}</p>}
+        {getError('firstName') && <p>{getError('firstName')}</p>}
       </div>
       <div>
         <label>Last Name</label>
@@ -95,7 +96,7 @@ export const PersonForm = ({ person, onChange }) => {
           onChange={validateOnChange(onChange, person)}
           value={person.lastName}
         />
-        {v.getError('lastName') && <p>{v.getError('lastName')}</p>}
+        {getError('lastName') && <p>{getError('lastName')}</p>}
       </div>
       <button onClick={handleSubmit}>Submit</button>
     </>
