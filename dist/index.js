@@ -19,18 +19,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useValidation = exports.stringIsNotEmpty = exports.stringIsMoreThan = exports.stringIsLessThan = exports.prop = exports.compose = void 0;
+exports.useValidation = void 0;
 const R = __importStar(require("ramda"));
 const react_1 = require("react");
 const base_1 = require("@de-formed/base");
-const utilities_1 = require("./utilities");
-Object.defineProperty(exports, "compose", { enumerable: true, get: function () { return utilities_1.compose; } });
-Object.defineProperty(exports, "prop", { enumerable: true, get: function () { return utilities_1.prop; } });
-Object.defineProperty(exports, "stringIsLessThan", { enumerable: true, get: function () { return utilities_1.stringIsLessThan; } });
-Object.defineProperty(exports, "stringIsMoreThan", { enumerable: true, get: function () { return utilities_1.stringIsMoreThan; } });
-Object.defineProperty(exports, "stringIsNotEmpty", { enumerable: true, get: function () { return utilities_1.stringIsNotEmpty; } });
+const fp_tools_1 = require("fp-tools");
 exports.useValidation = (validationSchema) => {
-    const [validationState, setValidationState] = utilities_1.compose(react_1.useState, base_1.createValidationState)(validationSchema);
+    const [validationState, setValidationState] = fp_tools_1.compose(react_1.useState, base_1.createValidationState)(validationSchema);
     const [validationErrors, setValidationErros] = react_1.useState([]);
     const resetValidationState = () => R.pipe(base_1.createValidationState, setValidationState)(validationSchema);
     const validate = base_1.createValidate(validationSchema, validationState, setValidationState);
