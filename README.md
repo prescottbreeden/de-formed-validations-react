@@ -56,7 +56,7 @@ export const PersonValidation = () => {
 };
 ```
 
-### Step 2: Plug into React Component
+### Step 2: Use the hook anywhere you need it.
 ```tsx
 // PersonForm.component.tsx
 import React from 'react';
