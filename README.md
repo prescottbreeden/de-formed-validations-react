@@ -129,9 +129,6 @@ Check out the [documentation](https://github.com/prescottbreeden/de-formed-valid
 
 More [examples](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Examples) and CodeSandboxes.
 
-## Coverage
-![coverage](https://github.com/prescottbreeden/de-formed-validations-react/blob/master/coverage.png?raw=true)
-
 ## License
 
 This project is licensed under the terms of the [MIT license](/LICENSE).
