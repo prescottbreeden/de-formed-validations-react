@@ -1,4 +1,4 @@
-# @De-Formed Validations
+# @De-Formed / React Validations
 
 @De-Formed Validations offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
