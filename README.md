@@ -4,10 +4,10 @@
 
 ## Why Use De-Formed?
 
-1. Modular, Composable, and Scalable.
+1. Modular and Composable.
 2. Unopinionated and Customizable.
 3. Lightweight.
-4. Easy to use and test.
+4. Easy to use.
 
 ## Install
 ```
@@ -63,27 +63,26 @@ import React from 'react';
 import { PersonValidation } from './PersonValidation';
 
 export const PersonForm = ({ person, onChange }) => {
-  const v = PersonValidation();
+  const {
+    validateAll,
+    validateOnChange,
+    validateOnBlur
+  } = PersonValidation();
 
-  const handleChange = v.validateOnChange(onChange, person);
-  const handleBlur = v.validateOnBlur(person);
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    const canSubmit = v.validateAll(person);
-    if (canSubmit) {
+  const handleSubmit = () => {
+    if (validateAll(person) {
       // submit logic
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div>
         <label>First Name</label>
         <input
           name="firstName"
-          onBlur={handleBlur}
-          onChange={handleChange}
+          onBlur={validateOnBlur(person)}
+          onChange={validateOnChange(onChange, person)}
           value={person.firstName}
         />
         {v.getError('firstName') && <p>{v.getError('firstName')}</p>}
@@ -92,14 +91,14 @@ export const PersonForm = ({ person, onChange }) => {
         <label>Last Name</label>
         <input
           name="lastName"
-          onBlur={handleBlur}
-          onChange={handleChange}
+          onBlur={validateOnBlur(person)}
+          onChange={validateOnChange(onChange, person)}
           value={person.lastName}
         />
         {v.getError('lastName') && <p>{v.getError('lastName')}</p>}
       </div>
-      <button>Submit</button>
-    </form>
+      <button onClick={handleSubmit}>Submit</button>
+    </>
   );
 };
 ```
