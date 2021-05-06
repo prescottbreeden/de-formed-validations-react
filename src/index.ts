@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react';
 import * as R from 'ramda';
-import { maybe } from './maybe';
+import { useState, useEffect } from 'react';
 import {
-  compose,
-  executeSideEffect,
-  isPropertyValid,
-  prop,
-  stringIsLessThan,
-  stringIsMoreThan,
-  stringIsNotEmpty,
-} from './utilities';
+  calculateIsValid,
+  createGetAllErrors,
+  createGetError,
+  createGetFieldValid,
+  createValidate,
+  createValidateAll,
+  createValidateAllIfTrue,
+  createValidateIfTrue,
+  createValidateOnBlur,
+  createValidateOnChange,
+  createValidationState,
+  gatherValidationErrors,
+} from '@de-formed/base';
+import { compose } from 'fp-tools';
 import {
   GetAllErrors,
   GetError,
@@ -23,10 +28,7 @@ import {
   ValidateOnBlur,
   ValidateOnChange,
   ValidationSchema,
-  ValidationState,
 } from './types';
-
-export { compose, prop, stringIsLessThan, stringIsMoreThan, stringIsNotEmpty };
 
 /**
  * A hook that can be used to generate an object containing functions and
@@ -36,106 +38,48 @@ export { compose, prop, stringIsLessThan, stringIsMoreThan, stringIsNotEmpty };
  */
 export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
   // --[ state constructor ]---------------------------------------------------
-  const createValidationsState = (schema: ValidationSchema<S>) => {
-    const buildState = (acc: ValidationState, key: keyof S) => ({
-      ...acc,
-      [key]: { isValid: true, errors: [] },
-    });
-    const state = maybe(schema).map(R.keys).map(R.reduce(buildState, {}));
-    return state.isJust ? state.join() : {};
-  };
 
   // --[ local states ]--------------------------------------------------------
-  const [validationState, setValidationState] = useState<ValidationState>(
-    createValidationsState(validationSchema),
-  );
+  const [validationState, setValidationState] = compose(
+    useState,
+    createValidationState,
+  )(validationSchema);
+
   const [validationErrors, setValidationErros] = useState<string[]>([]);
 
   // --[ validation logic ] ---------------------------------------------------
-  // updateValidationState :: ValidationState -> ValidationState
-  const updateValidationState = executeSideEffect(setValidationState);
 
   // resetValidationState :: () -> void
   const resetValidationState: ResetValidationState = () =>
-    R.pipe(createValidationsState, setValidationState)(validationSchema);
-
-  // runAllValidators :: string -> x -> ValidationState
-  const updatePropertyOnState = R.curry((property: keyof S, value: any) => {
-    const valueIsValid = R.pipe(prop('validation'), R.applyTo(value));
-    const getErrorOrNone = R.ifElse(
-      valueIsValid,
-      R.always(''),
-      R.prop('error'),
-    );
-    const state = maybe(validationSchema)
-      .map(prop(property))
-      .map(R.values)
-      .map(R.map(getErrorOrNone))
-      .map(R.filter(stringIsNotEmpty))
-      .map((errors: string[]) => ({ errors, isValid: !errors.length }))
-      .map(R.assoc(property as any, R.__, {}));
-    return state.isJust ? state.join() : {};
-  });
+    R.pipe(createValidationState, setValidationState)(validationSchema);
 
   // validate :: string -> value -> boolean
-  const validate: Validate<S> = (property: keyof S, value: any) =>
-    maybe(value)
-      .map(updatePropertyOnState(property as any))
-      .map(R.mergeRight(validationState))
-      .map(updateValidationState)
-      .map(isPropertyValid(property))
-      .chain(R.defaultTo(true));
+  const validate: Validate<S> = createValidate(
+    validationSchema,
+    validationState,
+    setValidationState,
+  );
 
   // validateIfTrue :: string -> value -> boolean
-  const validateIfTrue: ValidateIfTrue<S> = (property: keyof S, value: any) => {
-    const valid = maybe(value)
-      .map(updatePropertyOnState(property as any))
-      .map(R.mergeRight(validationState))
-      .map(
-        R.ifElse(
-          isPropertyValid(property),
-          updateValidationState,
-          R.always(null),
-        ),
-      )
-      .map(isPropertyValid(property));
-    return valid.isJust ? valid.join() : true;
-  };
+  const validateIfTrue: ValidateIfTrue<S> = createValidateIfTrue(
+    validationSchema,
+    validationState,
+    setValidationState,
+  );
 
   // validationAllIfTrue :: (x, [string]) -> boolean
-  const validateAll: ValidateAll<S> = (
-    value: any,
-    props = Object.keys(validationSchema) as (keyof S)[],
-  ) => {
-    const reduceStateUpdates = (acc: ValidationState, property: keyof S) => ({
-      ...acc,
-      ...updatePropertyOnState(property as any, value),
-    });
-    return maybe(props)
-      .map(R.reduce(reduceStateUpdates, {}))
-      .map(R.mergeRight(validationState))
-      .map(updateValidationState)
-      .map(isValid)
-      .chain(R.defaultTo(true));
-  };
+  const validateAll: ValidateAll<S> = createValidateAll(
+    validationSchema,
+    validationState,
+    setValidationState,
+  );
 
   // validationAllIfTrue :: (x, [string]) -> boolean
-  const validateAllIfTrue: ValidateAllIfTrue<S> = (
-    value: any,
-    props = Object.keys(validationSchema) as (keyof S)[],
-  ) => {
-    const reduceValids = (acc: ValidationState, property: keyof S) => {
-      const updated = updatePropertyOnState(property as any, value);
-      return updated[property].isValid
-        ? { ...acc, ...updated }
-        : { ...acc, ...validationState[property as any] };
-    };
-    return maybe(props)
-      .map(R.reduce(reduceValids, {}))
-      .map(R.mergeRight(validationState))
-      .map(isValid)
-      .chain(R.defaultTo(true));
-  };
+  const validateAllIfTrue: ValidateAllIfTrue<S> = createValidateAllIfTrue(
+    validationSchema,
+    validationState,
+    setValidationState,
+  );
 
   /**
    * Create a new onBlur function that calls validate on a property matching the
@@ -143,12 +87,11 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
    * @param state the data controlling the form
    * @return function :: (event: any) => any
    */
-  const validateOnBlur: ValidateOnBlur<S> = (state: S) => (
-    event: any,
-  ): void => {
-    const { value, name } = event.target;
-    validate(name as keyof S, { ...state, [name]: value });
-  };
+  const validateOnBlur: ValidateOnBlur<S> = createValidateOnBlur(
+    validationSchema,
+    validationState,
+    setValidationState,
+  );
 
   /**
    * Create a new onChange function that calls validateIfTrue on a property
@@ -157,63 +100,27 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
    * @param state the data controlling the form
    * @return function :: (event: any) => any
    */
-  const validateOnChange: ValidateOnChange<S> = (
-    onChange: (event: any) => any,
-    state: S,
-  ) => (event: any): unknown => {
-    const { value, name } = event.target;
-    validateIfTrue(name as keyof S, { ...state, [name]: value });
-    return onChange(event);
-  };
+  const validateOnChange: ValidateOnChange<S> = createValidateOnChange(
+    validationSchema,
+    validationState,
+    setValidationState,
+  );
 
   // getAllErrors :: (string, ValidationState) -> [string]
-  const getAllErrors: GetAllErrors<S> = (
-    property: keyof S,
-    vState = validationState,
-  ) => {
-    const errors = maybe(vState).map(prop(property)).map(prop('errors'));
-    return errors.isJust ? errors.join() : [];
-  };
+  const getAllErrors: GetAllErrors<S> = createGetAllErrors(validationState);
 
   // getError :: (string, ValidationState) -> string
-  const getError: GetError<S> = (
-    property: keyof S,
-    vState = validationState,
-  ) => {
-    const error = maybe(vState)
-      .map(prop(property))
-      .map(prop('errors'))
-      .map(R.head);
-    return error.isJust ? error.join() : '';
-  };
+  const getError: GetError<S> = createGetError(validationState);
 
   // getFieldValid :: (string, ValidationState) -> boolean
-  const getFieldValid: GetFieldValid<S> = (
-    property: keyof S,
-    vState = validationState,
-  ) => {
-    const valid = maybe(vState).map(prop(property)).map(prop('isValid'));
-    return valid.isJust ? valid.join() : true;
-  };
+  const getFieldValid: GetFieldValid<S> = createGetFieldValid(validationState);
 
   // isValid :: ValidationState -> boolean
-  const isValid: IsValid = (state = validationState) => {
-    return R.reduce(
-      (acc, curr) => (acc ? isPropertyValid(curr)(state) : acc),
-      true,
-      Object.keys(state),
-    );
-  };
+  const isValid: IsValid = (state = validationState) => calculateIsValid(state);
 
   // generateValidationErrors :: ValidationState -> [string]
-  const generateValidationErrors = (state: ValidationState) => {
-    return R.reduce(
-      (acc: string[], curr: keyof S) =>
-        getError(curr) ? [...acc, getError(curr)] : acc,
-      [],
-      Object.keys(state) as (keyof S)[],
-    );
-  };
+  const generateValidationErrors = (state = validationState) =>
+    gatherValidationErrors(state);
 
   // -- update validation error array when validation state changes
   useEffect(() => {
