@@ -16,22 +16,6 @@ yarn add @de-formed/react-validations
 ```
 npm i @de-formed/react-validations
 ```
-## Validation API Cheatsheet
-
-- getAllErrors :: string -> all error messages in the validation state for a key
-- getError :: string -> first error message in the validation state for a given key
-- getFieldValid :: string -> true if all validations are passing for a key, else false
-- isValid :: boolean = true if all validations are passing across all keys
-- resetValidationState :: () -> removes all errors in the validation state
-- setValidationState :: ValidationState -> overwrites the existing validation state with a new one
-- validate :: (string, object) -> runs validation functions on key and returns true / false
-- validateAll :: (object) -> runs all validation functions against keys that exist in the object
-- validateAllIfTrue :: (object) -> only updates passing validations
-- validateIfTrue :: (string, object) -> only updates validation state if all pass
-- validationErrors :: [string] = an array of the first validation errors in state for all keys
-- validationState :: ValidationState = the current validation state
-
-See [docs](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Docs) for more info.
 
 ## Basic Usage
 
