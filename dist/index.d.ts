@@ -5,6 +5,7 @@ export declare const useValidation: <S>(validationSchema: ValidationSchema<S>) =
     getAllErrors: GetAllErrors<S>;
     getError: GetError<S>;
     getFieldValid: GetFieldValid<S>;
+    isValid: boolean;
     resetValidationState: ResetValidationState;
     setValidationState: import("react").Dispatch<import("react").SetStateAction<import("@de-formed/base").ValidationState>>;
     validate: Validate<S>;

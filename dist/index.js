@@ -18,6 +18,7 @@ __exportStar(require("./types"), exports);
 exports.useValidation = (validationSchema) => {
     const [validationState, setValidationState] = react_1.useState(() => base_1.createValidationState(validationSchema));
     const [validationErrors, setValidationErros] = react_1.useState([]);
+    const [isValid, setIsValid] = react_1.useState(true);
     const resetValidationState = () => fp_tools_1.pipe(base_1.createValidationState, setValidationState)(validationSchema);
     const validate = base_1.createValidate(validationSchema, validationState, setValidationState);
     const validateIfTrue = base_1.createValidateIfTrue(validationSchema, validationState, setValidationState);
@@ -31,11 +32,13 @@ exports.useValidation = (validationSchema) => {
     const generateValidationErrors = (state = validationState) => base_1.gatherValidationErrors(state);
     react_1.useEffect(() => {
         setValidationErros(generateValidationErrors(validationState));
+        setIsValid(base_1.calculateIsValid(validationState));
     }, [validationState]);
     const validationObject = {
         getAllErrors,
         getError,
         getFieldValid,
+        isValid,
         resetValidationState,
         setValidationState,
         validate,
@@ -47,18 +50,6 @@ exports.useValidation = (validationSchema) => {
         validationErrors,
         validationState,
     };
-    Object.defineProperty(validationObject, 'isValid', {
-        get: () => base_1.calculateIsValid(validationState),
-        enumerable: true,
-    });
-    Object.defineProperty(validationObject, 'validationState', {
-        get: () => validationState,
-        enumerable: true,
-    });
-    Object.defineProperty(validationObject, 'validationErrors', {
-        get: () => base_1.gatherValidationErrors(validationState),
-        enumerable: true,
-    });
     return validationObject;
 };
 //# sourceMappingURL=index.js.map
