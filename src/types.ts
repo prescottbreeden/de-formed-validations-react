@@ -1,10 +1,9 @@
-export type ValidationFunction<S> = (value: S) => boolean;
-export type SetValidationState = (validationState: ValidationState) => void;
 export type GetAllErrors<S> = (property: keyof S) => string[];
 export type GetError<S> = (property: keyof S) => string;
 export type GetFieldValid<S> = (property: keyof S) => boolean;
-export type IsValid = (state?: ValidationState) => boolean;
+export type IsValid = boolean;
 export type ResetValidationState = () => void;
+export type SetValidationState = (validationState: ValidationState) => void;
 export type Validate<S> = (property: keyof S, value: S) => boolean;
 export type ValidateAll<S> = (value: S, keys?: (keyof S)[]) => boolean;
 export type ValidateAllIfTrue<S> = (value: S, keys?: (keyof S)[]) => boolean;
@@ -14,12 +13,13 @@ export type ValidateOnChange<S> = (
   onChange: (event: any) => any,
   value: S,
 ) => (event: any) => any;
+export type ValidationFunction<S> = (value: S) => boolean;
 
 export interface ValidationObject<S> {
-  getError: GetError<S>;
   getAllErrors: GetAllErrors<S>;
+  getError: GetError<S>;
   getFieldValid: GetFieldValid<S>;
-  isValid: (state?: ValidationState) => boolean;
+  isValid: boolean;
   resetValidationState: ResetValidationState;
   setValidationState: SetValidationState;
   validate: Validate<S>;

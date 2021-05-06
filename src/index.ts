@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import { useState, useEffect } from 'react';
 import {
   calculateIsValid,
@@ -14,12 +13,11 @@ import {
   createValidationState,
   gatherValidationErrors,
 } from '@de-formed/base';
-import { compose } from 'fp-tools';
+import { pipe } from 'fp-tools';
 import {
   GetAllErrors,
   GetError,
   GetFieldValid,
-  IsValid,
   ResetValidationState,
   Validate,
   ValidateAll,
@@ -30,6 +28,8 @@ import {
   ValidationSchema,
 } from './types';
 
+export * from './types';
+
 /**
  * A hook that can be used to generate an object containing functions and
  * properties pertaining to the validation state provided.
@@ -37,21 +37,18 @@ import {
  * @returns validationObject
  */
 export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
-  // --[ state constructor ]---------------------------------------------------
-
   // --[ local states ]--------------------------------------------------------
-  const [validationState, setValidationState] = compose(
-    useState,
-    createValidationState,
-  )(validationSchema);
-
+  const [validationState, setValidationState] = useState(() =>
+    createValidationState(validationSchema),
+  );
   const [validationErrors, setValidationErros] = useState<string[]>([]);
+  const [isValid, setIsValid] = useState(true);
 
   // --[ validation logic ] ---------------------------------------------------
 
   // resetValidationState :: () -> void
   const resetValidationState: ResetValidationState = () =>
-    R.pipe(createValidationState, setValidationState)(validationSchema);
+    pipe(createValidationState, setValidationState)(validationSchema);
 
   // validate :: string -> value -> boolean
   const validate: Validate<S> = createValidate(
@@ -81,25 +78,14 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
     setValidationState,
   );
 
-  /**
-   * Create a new onBlur function that calls validate on a property matching the
-   * name of the event whenever a blur event happens.
-   * @param state the data controlling the form
-   * @return function :: (event: any) => any
-   */
+  // validateOnBlur :: state -> (event -> any)
   const validateOnBlur: ValidateOnBlur<S> = createValidateOnBlur(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  /**
-   * Create a new onChange function that calls validateIfTrue on a property
-   * matching the name of the event whenever a change event happens.
-   * @param onChange function to handle onChange events
-   * @param state the data controlling the form
-   * @return function :: (event: any) => any
-   */
+  // validateOnChange :: (onChange, state) -> (event -> any)
   const validateOnChange: ValidateOnChange<S> = createValidateOnChange(
     validationSchema,
     validationState,
@@ -115,9 +101,6 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
   // getFieldValid :: (string, ValidationState) -> boolean
   const getFieldValid: GetFieldValid<S> = createGetFieldValid(validationState);
 
-  // isValid :: ValidationState -> boolean
-  const isValid: IsValid = (state = validationState) => calculateIsValid(state);
-
   // generateValidationErrors :: ValidationState -> [string]
   const generateValidationErrors = (state = validationState) =>
     gatherValidationErrors(state);
@@ -125,9 +108,10 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
   // -- update validation error array when validation state changes
   useEffect(() => {
     setValidationErros(generateValidationErrors(validationState) as any);
+    setIsValid(calculateIsValid(validationState));
   }, [validationState]); // eslint-disable-line
 
-  return {
+  const validationObject = {
     getAllErrors,
     getError,
     getFieldValid,
@@ -143,4 +127,6 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
     validationErrors,
     validationState,
   };
+
+  return validationObject;
 };

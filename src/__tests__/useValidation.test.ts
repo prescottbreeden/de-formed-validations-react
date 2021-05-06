@@ -66,7 +66,7 @@ describe('useValidation tests', () => {
     const { result } = renderHook(() => useValidation(schema));
     expect(typeof result.current.getError).toBe('function');
     expect(typeof result.current.getFieldValid).toBe('function');
-    expect(typeof result.current.isValid).toBe('function');
+    expect(typeof result.current.isValid).toBe('boolean');
     expect(typeof result.current.validate).toBe('function');
     expect(typeof result.current.validateAll).toBe('function');
     expect(typeof result.current.validateAllIfTrue).toBe('function');
@@ -203,7 +203,7 @@ describe('useValidation tests', () => {
   describe('isValid', () => {
     it('returns true by default', () => {
       const { result } = renderHook(() => useValidation(schema));
-      const output = result.current.isValid();
+      const output = result.current.isValid;
       expect(output).toBe(true);
     });
 
@@ -217,7 +217,7 @@ describe('useValidation tests', () => {
       act(() => {
         result.current.validate(name, state);
       });
-      const output = result.current.isValid();
+      const output = result.current.isValid;
       expect(output).toBe(false);
     });
 
@@ -236,7 +236,7 @@ describe('useValidation tests', () => {
         result.current.validate(name, state);
         result.current.validate(name, state2);
       });
-      const output = result.current.isValid();
+      const output = result.current.isValid;
       expect(output).toBe(true);
     });
   });
@@ -288,7 +288,7 @@ describe('useValidation tests', () => {
       act(() => {
         result.current.validate(name, state);
       });
-      expect(result.current.isValid()).toBe(false);
+      expect(result.current.isValid).toBe(false);
       expect(result.current.validationState).toStrictEqual(validationState);
     });
   });
@@ -443,126 +443,6 @@ describe('useValidation tests', () => {
     });
   });
 
-  // describe('validateCustom', () => {
-  //   const weirdSchema = {
-  //     namesAreAllBob: [
-  //       {
-  //         errorMessage: 'Names all have to be bob.',
-  //         validation: (state: any) => {
-  //           return state?.names.reduce((acc: boolean, name: string) => {
-  //             return acc ? name === 'bob' : false;
-  //           }, true);
-  //         },
-  //       },
-  //     ],
-  //     namesAreAllDingo: [
-  //       {
-  //         errorMessage: 'Names all have to be dino if dingo is true.',
-  //         validation: (state: any) => {
-  //           return state?.dingo
-  //             ? state?.names.reduce((acc: boolean, name: string) => {
-  //                 return acc ? name === 'dingo' : false;
-  //               }, true)
-  //             : true;
-  //         },
-  //       },
-  //     ],
-  //   };
-  //   it('returns a boolean', () => {
-  //     const { result } = renderHook(() => useValidation(weirdSchema));
-  //     let output: any;
-  //     const names = ['bob', 'bob', 'bob'];
-  //     act(() => {
-  //       output = result.current.validateCustom([
-  //         { key: 'namesAreAllBob', state: { ...defaultState, names } },
-  //         { key: 'namesAreAllDingo', state: { ...defaultState, names } },
-  //       ]);
-  //     });
-  //     expect(typeof output).toBe('boolean');
-  //   });
-
-  //   it('returns true if validations pass', () => {
-  //     const { result } = renderHook(() => useValidation(weirdSchema));
-  //     const bobState = {
-  //       ...defaultState,
-  //       names: ['bob', 'bob', 'bob']
-  //     }
-  //     const dingoState = {
-  //       ...defaultState,
-  //       dingo: true,
-  //       names: ['dingo', 'dingo', 'dingo']
-  //     }
-  //     let output: any;
-  //     act(() => {
-  //       output = result.current.validateCustom([
-  //         { key: 'namesAreAllBob', state: bobState },
-  //         { key: 'namesAreAllDingo', state: dingoState },
-  //       ]);
-  //     });
-  //     expect(output).toBe(true);
-  //   });
-
-  //   it('returns false if validations fail', () => {
-  //     const { result } = renderHook(() => useValidation(weirdSchema));
-  //     const bobState = {
-  //       ...defaultState,
-  //       names: ['notbob', 'bob', 'bob']
-  //     }
-  //     const dingoState = {
-  //       ...defaultState,
-  //       dingo: true,
-  //       names: ['notdingo', 'dingo', 'dingo']
-  //     }
-  //     let output: any;
-  //     act(() => {
-  //       output = result.current.validateCustom([
-  //         { key: 'namesAreAllBob', state: bobState },
-  //         { key: 'namesAreAllDingo', state: dingoState },
-  //       ]);
-  //     });
-  //     expect(output).toBe(false);
-  //   });
-
-  //   it('handles crazy nested reducers', () => {
-  //     const { result } = renderHook(() => useValidation(weirdSchema));
-  //     const matrix = [
-  //       ['jack', 'bob', 'bob'],
-  //       ['jack', 'bob', 'bob'],
-  //     ];
-  //     act(() => {
-  //       const output = matrix.reduce((prev: any, curr: any) => {
-  //         if (!prev) return prev;
-  //         return result.current.validateCustom([
-  //           { key: 'namesAreAllBob', state: { names: curr } },
-  //         ]);
-  //       }, true);
-  //       expect(output).toBe(false);
-  //     });
-  //   });
-
-  //   it('returns a boolean', () => {
-  //     const { result } = renderHook(() => useValidation(weirdSchema));
-  //     const bobState = {
-  //       ...defaultState,
-  //       names: ['bob', 'bob', 'bob']
-  //     }
-  //     const dingoState = {
-  //       ...defaultState,
-  //       dingo: true,
-  //       names: ['dingo', 'dingo', 'dingo']
-  //     }
-  //     let output: any;
-  //     act(() => {
-  //       output = result.current.validateCustom([
-  //         { key: 'namesAreAllBob', state: bobState },
-  //         { key: 'namesAreAllDingo', state: dingoState },
-  //       ]);
-  //     });
-  //     expect(typeof output).toBe('boolean');
-  //   });
-
-  // });
-
   describe('validateIfTrue', () => {
     it('returns a boolean if key exists', () => {
       const { result } = renderHook(() => useValidation(schema));
@@ -606,7 +486,7 @@ describe('useValidation tests', () => {
       act(() => {
         result.current.validateIfTrue(name, state);
       });
-      expect(result.current.isValid()).toBe(true);
+      expect(result.current.isValid).toBe(true);
       expect(result.current.validationState).toStrictEqual(validationState);
     });
 
@@ -626,11 +506,11 @@ describe('useValidation tests', () => {
       act(() => {
         result.current.validate('name', state);
       });
-      expect(result.current.isValid()).toBe(false);
+      expect(result.current.isValid).toBe(false);
       act(() => {
         result.current.validateIfTrue('name', state2);
       });
-      expect(result.current.isValid()).toBe(true);
+      expect(result.current.isValid).toBe(true);
       expect(result.current.validationState).toStrictEqual(validationState);
     });
   });
@@ -657,7 +537,7 @@ describe('useValidation tests', () => {
       act(() => {
         handleBlur(event as any);
       });
-      expect(result.current.isValid()).toBe(false);
+      expect(result.current.isValid).toBe(false);
     });
   });
 
@@ -679,7 +559,7 @@ describe('useValidation tests', () => {
       act(() => {
         result.current.validate('name', state);
       });
-      expect(result.current.isValid()).toBe(false);
+      expect(result.current.isValid).toBe(false);
       const onChange = () => 'bob ross';
       const handleChange = result.current.validateOnChange(onChange, state);
       const event = {
@@ -693,7 +573,7 @@ describe('useValidation tests', () => {
       act(() => {
         output = handleChange(event as any);
       });
-      expect(result.current.isValid()).toBe(true);
+      expect(result.current.isValid).toBe(true);
       expect(output).toBe('bob ross');
     });
   });
@@ -709,7 +589,7 @@ describe('useValidation tests', () => {
         result.current.validate('name', state);
         result.current.resetValidationState();
       });
-      expect(result.current.isValid()).toBe(true);
+      expect(result.current.isValid).toBe(true);
     });
   });
 
