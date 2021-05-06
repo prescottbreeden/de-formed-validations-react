@@ -21,10 +21,10 @@ npm i @de-formed/react-validations
 
 ### Step 1: Create a file to define your validations.
 ```ts
-// PersonValidation.ts
+// usePersonValidation.ts
 import { useValidation } from '@de-formed/react-validations';
 
-export const PersonValidation = () => {
+export const usePersonValidation = () => {
   return useValidation<Person>({
     firstName: [
       {
@@ -60,14 +60,14 @@ export const PersonValidation = () => {
 ```tsx
 // PersonForm.component.tsx
 import React from 'react';
-import { PersonValidation } from './PersonValidation';
+import { usePersonValidation } from './usePersonValidation';
 
 export const PersonForm = ({ person, onChange }) => {
   const {
     validateAll,
     validateOnChange,
     validateOnBlur
-  } = PersonValidation();
+  } = usePersonValidation();
 
   const handleSubmit = () => {
     if (validateAll(person) {
