@@ -1,6 +1,6 @@
 {
   "name": "@de-formed/react-validations",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Modular, Scalable, Function-driven Validations",
   "main": "dist/index",
   "repository": "https://github.com/prescottbreeden/de-formed-validations-react.git",
@@ -20,9 +20,12 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
+    "@de-formed/base": "^0.0.1",
     "@types/ramda": "^0.27.30",
     "@types/react": "^16.9.52",
-    "ramda": "^0.27.1"
+    "fp-tools": "^2.0.1",
+    "ramda": "^0.27.1",
+    "react": "^17.0.2"
   },
   "peerDependencies": {
     "react": ">=16.8.0"

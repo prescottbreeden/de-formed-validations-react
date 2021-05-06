@@ -112,14 +112,13 @@ describe('useValidation tests', () => {
           errors: [],
           isValid: true,
         },
-      })
-
+      });
     });
 
     it('defaults to an empty object if null or undefined is provided', () => {
       const { result } = renderHook(() => useValidation(null as any));
       expect(result.current.validationState).toStrictEqual({});
-    })
+    });
   });
 
   describe('getError', () => {
@@ -138,7 +137,7 @@ describe('useValidation tests', () => {
     it('retrieves an error message', () => {
       const { result } = renderHook(() => useValidation(schema));
       act(() => {
-        result.current.validate('name', { name: '' });
+        result.current.validate('name', { name: '' } as any);
       });
       const output = result.current.getError('name');
       expect(output).toBe('Name is required.');
@@ -163,7 +162,7 @@ describe('useValidation tests', () => {
       const name = 'name';
       const state = {
         ...defaultState,
-        name: ''
+        name: '',
       };
       act(() => {
         result.current.validate(name, state);
@@ -191,7 +190,7 @@ describe('useValidation tests', () => {
       const name = 'name';
       const state = {
         ...defaultState,
-        name: ''
+        name: '',
       };
       act(() => {
         result.current.validate(name, state);
@@ -213,7 +212,7 @@ describe('useValidation tests', () => {
       const name = 'name';
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       act(() => {
         result.current.validate(name, state);
@@ -227,11 +226,11 @@ describe('useValidation tests', () => {
       const name = 'name';
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       const state2 = {
         ...defaultState,
-        name: 'bob ross'
+        name: 'bob ross',
       };
       act(() => {
         result.current.validate(name, state);
@@ -249,7 +248,7 @@ describe('useValidation tests', () => {
       const name = 'name';
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       act(() => {
         output = result.current.validate(name, state);
@@ -262,7 +261,7 @@ describe('useValidation tests', () => {
       const name = 'balls' as keyof TestSchema;
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       let output: any;
       act(() => {
@@ -327,13 +326,13 @@ describe('useValidation tests', () => {
       });
       expect(result.current.validationState).toStrictEqual({
         name: {
-          errors: ["Cannot be bob."],
+          errors: ['Cannot be bob.'],
           isValid: false,
         },
         age: {
           errors: ['Must be 18'],
           isValid: false,
-        }
+        },
       });
     });
 
@@ -362,13 +361,13 @@ describe('useValidation tests', () => {
     it('handles missing properties', () => {
       const wonkySchema = {
         ...schema,
-        'canSave' : [
+        canSave: [
           {
             error: 'you cannot save',
             validation: (state: any) => !!state.name,
-          }
+          },
         ],
-      }
+      };
       const { result } = renderHook(() => useValidation(wonkySchema));
       act(() => {
         result.current.validateAll(failingState);
@@ -429,13 +428,13 @@ describe('useValidation tests', () => {
     it('handles missing properties', () => {
       const wonkySchema = {
         ...schema,
-        'canSave' : [
+        canSave: [
           {
             error: 'you cannot save',
             validation: (state: any) => !!state.name,
-          }
+          },
         ],
-      }
+      };
       const { result } = renderHook(() => useValidation(wonkySchema));
       act(() => {
         result.current.validateAllIfTrue(failingState);
@@ -571,7 +570,7 @@ describe('useValidation tests', () => {
       const name = 'name';
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       act(() => {
         output = result.current.validateIfTrue(name, state);
@@ -584,7 +583,7 @@ describe('useValidation tests', () => {
       const name = 'balls' as keyof TestSchema;
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       let output: any;
       act(() => {
@@ -615,11 +614,11 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       const state2 = {
         ...defaultState,
-        name: 'jack'
+        name: 'jack',
       };
       const validationState = {
         ...mockValidationState,
@@ -675,7 +674,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       act(() => {
         result.current.validate('name', state);
@@ -704,7 +703,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       act(() => {
         result.current.validate('name', state);
@@ -723,7 +722,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       act(() => {
         result.current.validate('name', state);
@@ -734,11 +733,11 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       const state = {
         ...defaultState,
-        name: 'bob'
+        name: 'bob',
       };
       const state2 = {
         ...defaultState,
-        name: 'jack'
+        name: 'jack',
       };
       act(() => {
         result.current.validate('name', state);

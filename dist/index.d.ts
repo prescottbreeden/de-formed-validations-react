@@ -1,6 +1,5 @@
-/// <reference types="react" />
 import { compose, prop, stringIsLessThan, stringIsMoreThan, stringIsNotEmpty } from './utilities';
-import { GetAllErrors, GetError, GetFieldValid, IsValid, ResetValidationState, Validate, ValidateAll, ValidateAllIfTrue, ValidateIfTrue, ValidateOnBlur, ValidateOnChange, ValidationSchema, ValidationState } from './types';
+import { GetAllErrors, GetError, GetFieldValid, IsValid, ResetValidationState, Validate, ValidateAll, ValidateAllIfTrue, ValidateIfTrue, ValidateOnBlur, ValidateOnChange, ValidationSchema } from './types';
 export { compose, prop, stringIsLessThan, stringIsMoreThan, stringIsNotEmpty };
 export declare const useValidation: <S>(validationSchema: ValidationSchema<S>) => {
     getAllErrors: GetAllErrors<S>;
@@ -8,7 +7,7 @@ export declare const useValidation: <S>(validationSchema: ValidationSchema<S>) =
     getFieldValid: GetFieldValid<S>;
     isValid: IsValid;
     resetValidationState: ResetValidationState;
-    setValidationState: import("react").Dispatch<import("react").SetStateAction<ValidationState>>;
+    setValidationState: any;
     validate: Validate<S>;
     validateAll: ValidateAll<S>;
     validateAllIfTrue: ValidateAllIfTrue<S>;
@@ -16,5 +15,5 @@ export declare const useValidation: <S>(validationSchema: ValidationSchema<S>) =
     validateOnBlur: ValidateOnBlur<S>;
     validateOnChange: ValidateOnChange<S>;
     validationErrors: string[];
-    validationState: ValidationState;
+    validationState: any;
 };
