@@ -286,10 +286,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@de-formed/base@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@de-formed/base/-/base-0.0.1.tgz#67e7e559f58018930e36770f8879d8edfafb3a7d"
-  integrity sha512-eLh6TIfizL79x62u8sM1lBIzk/qXt/2Zke8UImCVAsV9MY4jAx4pK+/LkbC4JJeuqtEjPgwetTVE79VGLEBDZg==
+"@de-formed/base@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@de-formed/base/-/base-0.0.2.tgz#7cf624312ec5b0a29e3a5b07aceb8f685a724f51"
+  integrity sha512-5JKLnRL3Z54LQTGOsbdeWD54NBKO336588Y7/eaPuJTpklpUXYvG3WpXUMQfJ7wk3lO2PI3wucPrU1Tlzec56Q==
   dependencies:
     "@types/ramda" "^0.27.30"
     ramda "^0.27.1"

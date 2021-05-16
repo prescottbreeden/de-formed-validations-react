@@ -1,12 +1,13 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useValidation } from '../';
 import { ValidationSchema, ValidationState } from '../types';
-import { map } from 'ramda';
+import { map, prop } from 'ramda';
 
 type TestSchema = {
   name: string;
   age: number;
-  dingo?: boolean;
+  dingo: boolean;
+  agreement: boolean;
 };
 
 const schema: ValidationSchema<TestSchema> = {
@@ -32,6 +33,12 @@ const schema: ValidationSchema<TestSchema> = {
       validation: (state: TestSchema) => state.age >= 18,
     },
   ],
+  agreement: [
+    {
+      error: 'Must accept terms.',
+      validation: prop('agreement'),
+    },
+  ],
 };
 
 const mockValidationState: ValidationState = {
@@ -43,12 +50,17 @@ const mockValidationState: ValidationState = {
     isValid: true,
     errors: [],
   },
+  agreement: {
+    isValid: true,
+    errors: [],
+  },
 };
 
 const defaultState = {
   name: 'jack',
   dingo: false,
   age: 42,
+  agreement: true,
 };
 
 const failingState = {
@@ -103,16 +115,7 @@ describe('useValidation tests', () => {
   describe('createValidationState', () => {
     it('crates a validation state when given a schema', () => {
       const { result } = renderHook(() => useValidation(schema));
-      expect(result.current.validationState).toStrictEqual({
-        name: {
-          errors: [],
-          isValid: true,
-        },
-        age: {
-          errors: [],
-          isValid: true,
-        },
-      });
+      expect(result.current.validationState).toStrictEqual(mockValidationState);
     });
 
     it('defaults to an empty object if null or undefined is provided', () => {
@@ -332,6 +335,10 @@ describe('useValidation tests', () => {
         age: {
           errors: ['Must be 18'],
           isValid: false,
+        },
+        agreement: {
+          errors: [],
+          isValid: true,
         },
       });
     });
@@ -575,6 +582,32 @@ describe('useValidation tests', () => {
       });
       expect(result.current.isValid).toBe(true);
       expect(output).toBe('bob ross');
+    });
+    it('updates checked properties if true and returns event', () => {
+      const { result } = renderHook(() => useValidation(schema));
+      const state = {
+        ...defaultState,
+        agreement: false,
+      };
+      act(() => {
+        result.current.validate('agreement', state);
+      });
+      expect(result.current.isValid).toBe(false);
+      const onChange = () => true;
+      const handleChange = result.current.validateOnChange(onChange, state);
+      const event = {
+        target: {
+          name: 'agreement',
+          checked: true,
+          dispatchEvent: new Event('change'),
+        },
+      };
+      let output: any;
+      act(() => {
+        output = handleChange(event as any);
+      });
+      expect(result.current.isValid).toBe(true);
+      expect(output).toBe(true);
     });
   });
 
