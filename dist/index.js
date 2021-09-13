@@ -16,23 +16,23 @@ const base_1 = require("@de-formed/base");
 const fp_tools_1 = require("fp-tools");
 __exportStar(require("./types"), exports);
 const useValidation = (validationSchema) => {
-    const [validationState, setValidationState] = react_1.useState(() => base_1.createValidationState(validationSchema));
-    const [validationErrors, setValidationErros] = react_1.useState([]);
-    const [isValid, setIsValid] = react_1.useState(true);
-    const resetValidationState = () => fp_tools_1.pipe(base_1.createValidationState, setValidationState)(validationSchema);
-    const validate = base_1.createValidate(validationSchema, validationState, setValidationState);
-    const validateIfTrue = base_1.createValidateIfTrue(validationSchema, validationState, setValidationState);
-    const validateAll = base_1.createValidateAll(validationSchema, validationState, setValidationState);
-    const validateAllIfTrue = base_1.createValidateAllIfTrue(validationSchema, validationState, setValidationState);
-    const validateOnBlur = base_1.createValidateOnBlur(validationSchema, validationState, setValidationState);
-    const validateOnChange = base_1.createValidateOnChange(validationSchema, validationState, setValidationState);
-    const getAllErrors = base_1.createGetAllErrors(validationState);
-    const getError = base_1.createGetError(validationState);
-    const getFieldValid = base_1.createGetFieldValid(validationState);
-    const generateValidationErrors = (state = validationState) => base_1.gatherValidationErrors(state);
-    react_1.useEffect(() => {
+    const [validationState, setValidationState] = (0, react_1.useState)(() => (0, base_1.createValidationState)(validationSchema));
+    const [validationErrors, setValidationErros] = (0, react_1.useState)([]);
+    const [isValid, setIsValid] = (0, react_1.useState)(true);
+    const resetValidationState = () => (0, fp_tools_1.pipe)(base_1.createValidationState, setValidationState)(validationSchema);
+    const validate = (0, base_1.createValidate)(validationSchema, validationState, setValidationState);
+    const validateIfTrue = (0, base_1.createValidateIfTrue)(validationSchema, validationState, setValidationState);
+    const validateAll = (0, base_1.createValidateAll)(validationSchema, validationState, setValidationState);
+    const validateAllIfTrue = (0, base_1.createValidateAllIfTrue)(validationSchema, validationState, setValidationState);
+    const validateOnBlur = (0, base_1.createValidateOnBlur)(validationSchema, validationState, setValidationState);
+    const validateOnChange = (0, base_1.createValidateOnChange)(validationSchema, validationState, setValidationState);
+    const getAllErrors = (0, base_1.createGetAllErrors)(validationState);
+    const getError = (0, base_1.createGetError)(validationState);
+    const getFieldValid = (0, base_1.createGetFieldValid)(validationState);
+    const generateValidationErrors = (state = validationState) => (0, base_1.gatherValidationErrors)(state);
+    (0, react_1.useEffect)(() => {
         setValidationErros(generateValidationErrors(validationState));
-        setIsValid(base_1.calculateIsValid(validationState));
+        setIsValid((0, base_1.calculateIsValid)(validationState));
     }, [validationState]);
     const validationObject = {
         getAllErrors,

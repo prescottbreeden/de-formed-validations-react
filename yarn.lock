@@ -1609,11 +1609,6 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
-fp-tools@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/fp-tools/-/fp-tools-3.0.0.tgz#308e35a517ad6749d289afb1e112857034ab7bed"
-  integrity sha512-t0Sh7Q/9HrDQVKla3ptPsW+Glk/9dQfjgld/am2lyQgz3PJec4ODgjuOzV/LO2zd3s1z0reeOMqNIGfSQclRQg==
-
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"

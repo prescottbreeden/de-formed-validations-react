@@ -13,7 +13,6 @@ import {
   createValidationState,
   gatherValidationErrors,
 } from '@de-formed/base';
-import { pipe } from 'fp-tools';
 import {
   GetAllErrors,
   GetError,
@@ -48,7 +47,7 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
 
   // resetValidationState :: () -> void
   const resetValidationState: ResetValidationState = () =>
-    pipe(createValidationState, setValidationState)(validationSchema);
+    setValidationState(createValidationState(validationSchema));
 
   // validate :: string -> value -> boolean
   const validate: Validate<S> = createValidate(
