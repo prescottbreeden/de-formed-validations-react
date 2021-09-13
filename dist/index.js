@@ -13,13 +13,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useValidation = void 0;
 const react_1 = require("react");
 const base_1 = require("@de-formed/base");
-const fp_tools_1 = require("fp-tools");
 __exportStar(require("./types"), exports);
 const useValidation = (validationSchema) => {
     const [validationState, setValidationState] = (0, react_1.useState)(() => (0, base_1.createValidationState)(validationSchema));
     const [validationErrors, setValidationErros] = (0, react_1.useState)([]);
     const [isValid, setIsValid] = (0, react_1.useState)(true);
-    const resetValidationState = () => (0, fp_tools_1.pipe)(base_1.createValidationState, setValidationState)(validationSchema);
+    const resetValidationState = () => setValidationState((0, base_1.createValidationState)(validationSchema));
     const validate = (0, base_1.createValidate)(validationSchema, validationState, setValidationState);
     const validateIfTrue = (0, base_1.createValidateIfTrue)(validationSchema, validationState, setValidationState);
     const validateAll = (0, base_1.createValidateAll)(validationSchema, validationState, setValidationState);
