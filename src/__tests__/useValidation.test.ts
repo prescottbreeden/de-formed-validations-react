@@ -1,7 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useValidation } from '../';
 import { ValidationSchema, ValidationState } from '../types';
-import { map, prop } from 'ramda';
 
 type TestSchema = {
   name: string;
@@ -36,7 +35,7 @@ const schema: ValidationSchema<TestSchema> = {
   agreement: [
     {
       error: 'Must accept terms.',
-      validation: prop('agreement'),
+      validation: ({ agreement }) => Boolean(agreement),
     },
   ],
 };
@@ -89,27 +88,6 @@ describe('useValidation tests', () => {
     expect(typeof result.current.setValidationState).toBe('function');
     expect(Array.isArray(result.current.validationErrors)).toBe(true);
     expect(typeof result.current.validationState).toBe('object');
-  });
-
-  it('returns all functions and read-only objects defined by hook', () => {
-    const { result } = renderHook(() => useValidation(schema));
-    expect(result.current.validationState).toStrictEqual(mockValidationState);
-    expect(Object.keys(result.current)).toStrictEqual([
-      'getAllErrors',
-      'getError',
-      'getFieldValid',
-      'isValid',
-      'resetValidationState',
-      'setValidationState',
-      'validate',
-      'validateAll',
-      'validateAllIfTrue',
-      'validateIfTrue',
-      'validateOnBlur',
-      'validateOnChange',
-      'validationErrors',
-      'validationState',
-    ]);
   });
 
   describe('createValidationState', () => {
@@ -348,7 +326,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       let output: boolean[];
       act(() => {
-        output = map(result.current.validateAll, data);
+        output = data.map((s) => result.current.validateAll(s));
         expect(output).toStrictEqual([true, true, true]);
       });
     });
@@ -415,7 +393,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       let output: boolean[];
       act(() => {
-        output = map(result.current.validateAllIfTrue, data);
+        output = data.map((s) => result.current.validateAllIfTrue(s));
         expect(output).toStrictEqual([true, true, true]);
       });
     });
