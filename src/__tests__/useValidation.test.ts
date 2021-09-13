@@ -600,7 +600,7 @@ describe('useValidation tests', () => {
           name: 'agreement',
           checked: true,
           dispatchEvent: new Event('change'),
-          type: 'checkbox'
+          type: 'checkbox',
         },
       };
       let output: any;
