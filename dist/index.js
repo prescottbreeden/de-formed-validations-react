@@ -15,7 +15,7 @@ const react_1 = require("react");
 const base_1 = require("@de-formed/base");
 const fp_tools_1 = require("fp-tools");
 __exportStar(require("./types"), exports);
-exports.useValidation = (validationSchema) => {
+const useValidation = (validationSchema) => {
     const [validationState, setValidationState] = react_1.useState(() => base_1.createValidationState(validationSchema));
     const [validationErrors, setValidationErros] = react_1.useState([]);
     const [isValid, setIsValid] = react_1.useState(true);
@@ -52,4 +52,5 @@ exports.useValidation = (validationSchema) => {
     };
     return validationObject;
 };
+exports.useValidation = useValidation;
 //# sourceMappingURL=index.js.map
