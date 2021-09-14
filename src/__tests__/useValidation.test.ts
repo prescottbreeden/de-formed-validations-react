@@ -90,6 +90,27 @@ describe('useValidation tests', () => {
     expect(typeof result.current.validationState).toBe('object');
   });
 
+  it('returns all functions and read-only objects defined by hook', () => {
+    const { result } = renderHook(() => useValidation(schema));
+    expect(result.current.validationState).toStrictEqual(mockValidationState);
+    expect(Object.keys(result.current)).toStrictEqual([
+      'getAllErrors',
+      'getError',
+      'getFieldValid',
+      'isValid',
+      'resetValidationState',
+      'setValidationState',
+      'validate',
+      'validateAll',
+      'validateAllIfTrue',
+      'validateIfTrue',
+      'validateOnBlur',
+      'validateOnChange',
+      'validationErrors',
+      'validationState',
+    ]);
+  });
+
   describe('createValidationState', () => {
     it('crates a validation state when given a schema', () => {
       const { result } = renderHook(() => useValidation(schema));

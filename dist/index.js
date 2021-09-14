@@ -16,7 +16,40 @@ const base_1 = require("@de-formed/base");
 __exportStar(require("./types"), exports);
 const useValidation = (validationSchema) => {
     const [validationState, setValidationState] = (0, react_1.useState)(() => (0, base_1.createValidationState)(validationSchema));
-    return new base_1.BaseValidation(validationSchema, validationState, setValidationState);
+    const [validationErrors, setValidationErros] = (0, react_1.useState)([]);
+    const [isValid, setIsValid] = (0, react_1.useState)(true);
+    const resetValidationState = () => setValidationState((0, base_1.createValidationState)(validationSchema));
+    const validate = (0, base_1.createValidate)(validationSchema, validationState, setValidationState);
+    const validateIfTrue = (0, base_1.createValidateIfTrue)(validationSchema, validationState, setValidationState);
+    const validateAll = (0, base_1.createValidateAll)(validationSchema, validationState, setValidationState);
+    const validateAllIfTrue = (0, base_1.createValidateAllIfTrue)(validationSchema, validationState, setValidationState);
+    const validateOnBlur = (0, base_1.createValidateOnBlur)(validationSchema, validationState, setValidationState);
+    const validateOnChange = (0, base_1.createValidateOnChange)(validationSchema, validationState, setValidationState);
+    const getAllErrors = (0, base_1.createGetAllErrors)(validationState);
+    const getError = (0, base_1.createGetError)(validationState);
+    const getFieldValid = (0, base_1.createGetFieldValid)(validationState);
+    const generateValidationErrors = (state = validationState) => (0, base_1.gatherValidationErrors)(state);
+    (0, react_1.useEffect)(() => {
+        setValidationErros(generateValidationErrors(validationState));
+        setIsValid((0, base_1.calculateIsValid)(validationState));
+    }, [validationState]);
+    const validationObject = {
+        getAllErrors,
+        getError,
+        getFieldValid,
+        isValid,
+        resetValidationState,
+        setValidationState,
+        validate,
+        validateAll,
+        validateAllIfTrue,
+        validateIfTrue,
+        validateOnBlur,
+        validateOnChange,
+        validationErrors,
+        validationState,
+    };
+    return validationObject;
 };
 exports.useValidation = useValidation;
 //# sourceMappingURL=index.js.map
