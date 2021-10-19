@@ -14,7 +14,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "yarn tsc",
-    "prepublishOnly": "yarn test",
+    // "prepublishOnly": "yarn test",
     "preversion": "yarn lint",
     "version": "yarn format && git add .",
     "postversion": "git push && git push --tags"
