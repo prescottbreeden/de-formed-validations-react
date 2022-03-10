@@ -537,7 +537,6 @@ describe('useValidation tests', () => {
         target: {
           name: 'name',
           value: 'bob',
-          dispatchEvent: new Event('blur'),
         },
       };
       act(() => {
@@ -551,7 +550,7 @@ describe('useValidation tests', () => {
     it('returns a new function', () => {
       const { result } = renderHook(() => useValidation(schema));
       const state = defaultState;
-      const onChange = (event: any) => 'bob ross';
+      const onChange = (_event: any) => 'bob ross';
       const handleChange = result.current.validateOnChange(onChange, state);
       expect(typeof handleChange).toBe('function');
     });
@@ -572,7 +571,6 @@ describe('useValidation tests', () => {
         target: {
           name: 'name',
           value: 'jack',
-          dispatchEvent: new Event('change'),
         },
       };
       let output: any;
@@ -598,7 +596,6 @@ describe('useValidation tests', () => {
         target: {
           name: 'agreement',
           checked: true,
-          dispatchEvent: new Event('change'),
           type: 'checkbox',
         },
       };
@@ -676,4 +673,3 @@ describe('useValidation tests', () => {
     });
   });
 });
-
