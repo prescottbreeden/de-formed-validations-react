@@ -1,6 +1,10 @@
 {
   "name": "@de-formed/react-validations",
+<<<<<<< HEAD
   "version": "2.0.4",
+=======
+  "version": "3.0.0",
+>>>>>>> b7fa234 (updated pkg)
   "description": "Modular, Function-driven Validations",
   "main": "dist/index",
   "repository": "https://github.com/prescottbreeden/de-formed-validations-react.git",
