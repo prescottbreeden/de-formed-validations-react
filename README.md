@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/@de-formed%2Freact-validations.svg)](https://badge.fury.io/js/@de-formed%2Freact-validations)
 [![Known Vulnerabilities](https://snyk.io/test/github/prescottbreeden/de-formed/badge.svg)](https://snyk.io/test/github/prescottbreeden/de-formed)
 ![example workflow](https://github.com/prescottbreeden/de-formed-validations-react/actions/workflows/main.yml/badge.svg)
-[![codecov](https://codecov.io/gh/prescottbreeden/de-formed/branch/main/graph/badge.svg?token=a1u71NhJwb)](https://codecov.io/gh/prescottbreeden/de-formed)
+[![codecov](https://codecov.io/gh/prescottbreeden/de-formed-validations-react/branch/main/graph/badge.svg?token=7MPA6NZZDD)](https://codecov.io/gh/prescottbreeden/de-formed-validations-react)
 ![size](https://img.shields.io/bundlephobia/minzip/@de-formed/base)
 
 @De-Formed Validations offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
