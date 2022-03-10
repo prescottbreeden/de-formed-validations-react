@@ -1,4 +1,12 @@
-# @De-Formed / React Validations
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/35798153/157611790-96f35e8b-ee4f-44e4-b3c9-1864900a02f2.png" />
+</p>
+
+[![npm version](https://badge.fury.io/js/@de-formed%2Fbase.svg)](https://badge.fury.io/js/@de-formed%2Fbase)
+[![Known Vulnerabilities](https://snyk.io/test/github/prescottbreeden/de-formed/badge.svg)](https://snyk.io/test/github/prescottbreeden/de-formed)
+![example workflow](https://github.com/prescottbreeden/de-formed/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/prescottbreeden/de-formed/branch/main/graph/badge.svg?token=a1u71NhJwb)](https://codecov.io/gh/prescottbreeden/de-formed)
+![size](https://img.shields.io/bundlephobia/minzip/@de-formed/base)
 
 @De-Formed Validations offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
@@ -10,9 +18,11 @@
 4. Easy to use.
 
 ## Install
+
 ```
 yarn add @de-formed/react-validations
 ```
+
 ```
 npm i @de-formed/react-validations
 ```
@@ -20,6 +30,7 @@ npm i @de-formed/react-validations
 ## Basic Usage
 
 ### Step 1: Create a file to define your validations.
+
 ```ts
 // usePersonValidation.ts
 import { useValidation } from '@de-formed/react-validations';
@@ -57,6 +68,7 @@ export const usePersonValidation = () => {
 ```
 
 ### Step 2: Use the hook anywhere you need it.
+
 ```tsx
 // PersonForm.component.tsx
 import React from 'react';
@@ -103,7 +115,8 @@ export const PersonForm = ({ person, onChange }) => {
   );
 };
 ```
-***
+
+---
 
 ## Documentation
 

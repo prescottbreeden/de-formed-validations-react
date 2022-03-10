@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import {
   calculateIsValid,
   createGetAllErrors,
@@ -12,8 +12,6 @@ import {
   createValidateOnChange,
   createValidationState,
   gatherValidationErrors,
-} from '@de-formed/base';
-import {
   GetAllErrors,
   GetError,
   GetFieldValid,
@@ -25,9 +23,8 @@ import {
   ValidateOnBlur,
   ValidateOnChange,
   ValidationSchema,
-} from './types';
-
-export * from './types';
+  ValidationState,
+} from '@de-formed/base';
 
 /**
  * A hook that can be used to generate an object containing functions and
@@ -37,78 +34,64 @@ export * from './types';
  */
 export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
   // --[ local states ]--------------------------------------------------------
-  const [validationState, setValidationState] = useState(() =>
-    createValidationState(validationSchema),
+  const [validationState, setValidationState] = React.useState<ValidationState>(
+    () => createValidationState(validationSchema),
   );
-  const [validationErrors, setValidationErros] = useState<string[]>([]);
-  const [isValid, setIsValid] = useState(true);
+  const [validationErrors, setValidationErrors] = React.useState<string[]>([]);
+  const [isValid, setIsValid] = React.useState<boolean>(true);
 
   // --[ validation logic ] ---------------------------------------------------
 
-  // resetValidationState :: () -> void
   const resetValidationState: ResetValidationState = () =>
     setValidationState(createValidationState(validationSchema));
 
-  // validate :: string -> value -> boolean
   const validate: Validate<S> = createValidate(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  // validateIfTrue :: string -> value -> boolean
   const validateIfTrue: ValidateIfTrue<S> = createValidateIfTrue(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  // validationAllIfTrue :: (x, [string]) -> boolean
   const validateAll: ValidateAll<S> = createValidateAll(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  // validationAllIfTrue :: (x, [string]) -> boolean
   const validateAllIfTrue: ValidateAllIfTrue<S> = createValidateAllIfTrue(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  // validateOnBlur :: state -> (event -> any)
   const validateOnBlur: ValidateOnBlur<S> = createValidateOnBlur(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  // validateOnChange :: (onChange, state) -> (event -> any)
   const validateOnChange: ValidateOnChange<S> = createValidateOnChange(
     validationSchema,
     validationState,
     setValidationState,
   );
 
-  // getAllErrors :: (string, ValidationState) -> [string]
   const getAllErrors: GetAllErrors<S> = createGetAllErrors(validationState);
 
-  // getError :: (string, ValidationState) -> string
   const getError: GetError<S> = createGetError(validationState);
 
-  // getFieldValid :: (string, ValidationState) -> boolean
   const getFieldValid: GetFieldValid<S> = createGetFieldValid(validationState);
 
-  // generateValidationErrors :: ValidationState -> [string]
-  const generateValidationErrors = (state = validationState) =>
-    gatherValidationErrors(state);
-
-  // -- update validation error array when validation state changes
-  useEffect(() => {
-    setValidationErros(generateValidationErrors(validationState) as any);
+  // -- update validation error array and isValid when validation state changes
+  React.useEffect(() => {
+    setValidationErrors(gatherValidationErrors(validationState));
     setIsValid(calculateIsValid(validationState));
-  }, [validationState]); // eslint-disable-line
+  }, [validationState]);
 
   const validationObject = {
     getAllErrors,

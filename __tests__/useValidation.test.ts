@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useValidation } from '../';
-import { ValidationSchema, ValidationState } from '../types';
+import { ValidationSchema, ValidationState } from '@de-formed/base';
 
 type TestSchema = {
   name: string;
@@ -117,8 +117,8 @@ describe('useValidation tests', () => {
       expect(result.current.validationState).toStrictEqual(mockValidationState);
     });
 
-    it('defaults to an empty object if null or undefined is provided', () => {
-      const { result } = renderHook(() => useValidation(null as any));
+    it('defaults to an empty object if undefined is provided', () => {
+      const { result } = renderHook(() => useValidation(undefined as any));
       expect(result.current.validationState).toStrictEqual({});
     });
   });
@@ -676,3 +676,4 @@ describe('useValidation tests', () => {
     });
   });
 });
+

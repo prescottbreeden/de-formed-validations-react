@@ -1,23 +1,15 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useValidation = void 0;
-const react_1 = require("react");
+const react_1 = __importDefault(require("react"));
 const base_1 = require("@de-formed/base");
-__exportStar(require("./types"), exports);
 const useValidation = (validationSchema) => {
-    const [validationState, setValidationState] = (0, react_1.useState)(() => (0, base_1.createValidationState)(validationSchema));
-    const [validationErrors, setValidationErros] = (0, react_1.useState)([]);
-    const [isValid, setIsValid] = (0, react_1.useState)(true);
+    const [validationState, setValidationState] = react_1.default.useState(() => (0, base_1.createValidationState)(validationSchema));
+    const [validationErrors, setValidationErrors] = react_1.default.useState([]);
+    const [isValid, setIsValid] = react_1.default.useState(true);
     const resetValidationState = () => setValidationState((0, base_1.createValidationState)(validationSchema));
     const validate = (0, base_1.createValidate)(validationSchema, validationState, setValidationState);
     const validateIfTrue = (0, base_1.createValidateIfTrue)(validationSchema, validationState, setValidationState);
@@ -28,9 +20,8 @@ const useValidation = (validationSchema) => {
     const getAllErrors = (0, base_1.createGetAllErrors)(validationState);
     const getError = (0, base_1.createGetError)(validationState);
     const getFieldValid = (0, base_1.createGetFieldValid)(validationState);
-    const generateValidationErrors = (state = validationState) => (0, base_1.gatherValidationErrors)(state);
-    (0, react_1.useEffect)(() => {
-        setValidationErros(generateValidationErrors(validationState));
+    react_1.default.useEffect(() => {
+        setValidationErrors((0, base_1.gatherValidationErrors)(validationState));
         setIsValid((0, base_1.calculateIsValid)(validationState));
     }, [validationState]);
     const validationObject = {
