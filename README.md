@@ -4,7 +4,7 @@
 
 [![npm version](https://badge.fury.io/js/@de-formed%2Freact-validations.svg)](https://badge.fury.io/js/@de-formed%2Freact-validations)
 [![Known Vulnerabilities](https://snyk.io/test/github/prescottbreeden/de-formed/badge.svg)](https://snyk.io/test/github/prescottbreeden/de-formed)
-![example workflow](https://github.com/prescottbreeden/de-formed/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/prescottbreeden/de-formed-validations-react/actions/workflows/main.yml/badge.svg)
 [![codecov](https://codecov.io/gh/prescottbreeden/de-formed/branch/main/graph/badge.svg?token=a1u71NhJwb)](https://codecov.io/gh/prescottbreeden/de-formed)
 ![size](https://img.shields.io/bundlephobia/minzip/@de-formed/base)
 
