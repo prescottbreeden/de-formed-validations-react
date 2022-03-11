@@ -11,16 +11,16 @@
 ## What is De-Formed?
 De-Formed Validations offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, De-Formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
-## Philosophy
-
-De-Formed was initially developed during the creation of a government website that involved hundreds of forms. Outside of the occasional navigation menu, the entirety of the web-app was either a form, a nested form, or a form in a series of other forms in the process of filling out one of the multitudes of applications or data entry by government employees. Initially, we implemented various popular form libraries. However we continued to find edge-cases and complexity around desirable user experiences that these libraries did not have straightforward ways of addressing. We realized then that the problem we hoped to address with a form library was an architecture problem, not a syntax problem, and form libraries tend to enforce the latter while restricting the former.
-
 ## Why Use De-Formed?
 
 1. Modular, Composable, and Scalable
 2. Unopinionated and Customizable to the Moon 🚀
 3. Lightweight and Fast (~10x smaller than Formik, ~6x smaller than React Hook Form)
 4. Easy to Use, Easy to Test
+
+## Philosophy
+
+De-Formed was initially developed during the creation of a government website that involved hundreds of forms. Outside of the occasional navigation menu, the entirety of the web-app was either a form, a nested form, or a form in a series of other forms in the process of filling out one of the multitudes of applications or data entry by government employees. Initially, we implemented various popular form libraries. However we continued to find edge-cases and complexity around desirable user experiences that these libraries did not have straightforward ways of addressing. We realized then that the problem we hoped to address with a form library was an architecture problem, not a syntax problem, and form libraries tend to enforce the latter while restricting the former.
 
 ## Install
 
