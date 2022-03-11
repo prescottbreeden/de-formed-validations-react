@@ -118,7 +118,6 @@ export const PersonForm = ({ person, onChange }) => {
 ```
 
 ---
-## Getting Started
 
 ## Getting Started
 
