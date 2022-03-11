@@ -6,16 +6,16 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/prescottbreeden/de-formed-validations-react/badge.svg)](https://snyk.io/test/github/prescottbreeden/de-formed-validations-react)
 ![example workflow](https://github.com/prescottbreeden/de-formed-validations-react/actions/workflows/main.yml/badge.svg)
 [![codecov](https://codecov.io/gh/prescottbreeden/de-formed-validations-react/branch/main/graph/badge.svg?token=7MPA6NZZDD)](https://codecov.io/gh/prescottbreeden/de-formed-validations-react)
-![size](https://img.shields.io/bundlephobia/minzip/@de-formed/base)
+![size](https://img.shields.io/bundlephobia/minzip/@de-formed/react-validations)
 
 @De-Formed Validations offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, @de-formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
 
 ## Why Use De-Formed?
 
-1. Modular and Composable.
-2. Unopinionated and Customizable.
-3. Lightweight.
-4. Easy to use.
+1. Modular, Composable, and Scalable
+2. Unopinionated and Customizable to the Moon 🚀
+3. Lightweight and Fast (~10x smaller than Formik, ~6x smaller than React Hook Form)
+4. Easy to Use, Easy to Test
 
 ## Install
 
@@ -67,7 +67,8 @@ export const usePersonValidation = () => {
 };
 ```
 
-### Step 2: Use the hook anywhere you need it.
+### Step 2: Use the hook anywhere.
+Bind the things you need; ignore the things you don't. De-Formed will take care of the rest.
 
 ```tsx
 // PersonForm.component.tsx
@@ -117,10 +118,15 @@ export const PersonForm = ({ person, onChange }) => {
 ```
 
 ---
+## Getting Started
+
+## Getting Started
+
+Visit the wiki to get a step by step [walkthrough](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Getting-Started) of how to customize De-Formed to the moon 🚀
 
 ## Documentation
 
-Check out the [documentation](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Docs).
+API [documentation](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Docs).
 
 ## Examples
 
