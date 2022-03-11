@@ -28,7 +28,7 @@ import {
 
 /**
  * A hook that can be used to generate an object containing functions and
- * properties pertaining to the validation state provided.
+ * properties pertaining to the validation schema provided.
  * @param validationSchema an object containing all properties to validate
  * @returns validationObject
  */

@@ -9,14 +9,18 @@
 ![size](https://img.shields.io/bundlephobia/minzip/@de-formed/react-validations)
 
 ## What is De-Formed?
-De-Formed Validations offers a robust and unopinionated API to customize form and data validations. With only a handful of properties to learn, De-Formed maintains its own internal state with simple function calls so that you can design your architecture the way you want to.
+
+De-Formed is a library for designing modular, event-driven form and data validations. Bind the things you need; ignore the things you don't. De-Formed will take care of the rest so that you can design your architecture the way you want to.
 
 ## Why Use De-Formed?
 
-1. Modular, Composable, and Scalable
-2. Unopinionated and Customizable to the Moon 🚀
-3. Lightweight (~10x smaller than Formik, ~6x smaller than React Hook Form)
-4. Easy to Use, Easy to Test
+1. **Modular** - decoupled from your form architecture.
+1. **Composable** - turn your validations and forms into Lego bricks.
+1. **Extendable** - add/modify the API as you see fit
+1. **Unopinionated** - customize your UX to the Moon 🚀
+1. **Lightweight** - [compare it on bundlephobia](https://bundlephobia.com/package/@de-formed/react-validations)
+1. **Easy to Use** - its all functions
+1. **Easy to Test** - unit test your business logic
 
 ## Install
 
@@ -58,7 +62,8 @@ export const usePersonValidation = () => {
         validation: ({ lastName }) => lastName.length <= 20,
       },
       {
-        error: 'Must be Ross if fist name is Bob.',
+        error: ({ lastName }) =>
+          `${lastName} must be Ross if fist name is Bob.`,
         validation: ({ firstName, lastName }) => {
           return firstName === 'Bob' ? lastName === 'Ross' : true;
         },
@@ -69,6 +74,7 @@ export const usePersonValidation = () => {
 ```
 
 ### Step 2: Use the hook anywhere.
+
 Bind the things you need; ignore the things you don't. De-Formed will take care of the rest.
 
 ```tsx
@@ -122,7 +128,7 @@ export const PersonForm = ({ person, onChange }) => {
 
 ## Getting Started
 
-Visit the wiki to get a step by step [walkthrough](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Getting-Started) of how to customize De-Formed to the moon 🚀
+Guided [walkthrough](https://github.com/prescottbreeden/de-formed-validations-react/wiki/Getting-Started) of how to customize De-Formed to the moon 🚀
 
 ## Documentation
 
