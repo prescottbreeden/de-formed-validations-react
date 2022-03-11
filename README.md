@@ -15,7 +15,7 @@ De-Formed Validations offers a robust and unopinionated API to customize form an
 
 1. Modular, Composable, and Scalable
 2. Unopinionated and Customizable to the Moon 🚀
-3. Lightweight and Fast (~10x smaller than Formik, ~6x smaller than React Hook Form)
+3. Lightweight (~10x smaller than Formik, ~6x smaller than React Hook Form)
 4. Easy to Use, Easy to Test
 
 ## Install
