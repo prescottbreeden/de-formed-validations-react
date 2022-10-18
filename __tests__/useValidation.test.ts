@@ -42,16 +42,19 @@ const schema: ValidationSchema<TestSchema> = {
 
 const mockValidationState: ValidationState = {
   name: {
-    isValid: true,
+    dirty: false,
     errors: [],
+    isValid: true,
   },
   age: {
-    isValid: true,
+    dirty: false,
     errors: [],
+    isValid: true,
   },
   agreement: {
-    isValid: true,
+    dirty: false,
     errors: [],
+    isValid: true,
   },
 };
 
@@ -80,8 +83,8 @@ describe('useValidation tests', () => {
     expect(typeof result.current.isValid).toBe('boolean');
     expect(typeof result.current.validate).toBe('function');
     expect(typeof result.current.validateAll).toBe('function');
-    expect(typeof result.current.validateAllIfTrue).toBe('function');
-    expect(typeof result.current.validateIfTrue).toBe('function');
+    expect(typeof result.current.validateAllIfDirty).toBe('function');
+    expect(typeof result.current.validateIfDirty).toBe('function');
     expect(typeof result.current.validateOnBlur).toBe('function');
     expect(typeof result.current.validateOnChange).toBe('function');
     expect(typeof result.current.resetValidationState).toBe('function');
@@ -102,8 +105,8 @@ describe('useValidation tests', () => {
       'setValidationState',
       'validate',
       'validateAll',
-      'validateAllIfTrue',
-      'validateIfTrue',
+      'validateAllIfDirty',
+      'validateIfDirty',
       'validateOnBlur',
       'validateOnChange',
       'validationErrors',
@@ -277,8 +280,9 @@ describe('useValidation tests', () => {
       const validationState = {
         ...mockValidationState,
         name: {
-          isValid: false,
+          dirty: true,
           errors: ['Must be dingo.'],
+          isValid: false,
         },
       };
       const name = 'name';
@@ -328,14 +332,17 @@ describe('useValidation tests', () => {
       });
       expect(result.current.validationState).toStrictEqual({
         name: {
+          dirty: true,
           errors: ['Cannot be bob.'],
           isValid: false,
         },
         age: {
+          dirty: true,
           errors: ['Must be 18'],
           isValid: false,
         },
         agreement: {
+          dirty: true,
           errors: [],
           isValid: true,
         },
@@ -382,12 +389,12 @@ describe('useValidation tests', () => {
     });
   });
 
-  describe('validateAllIfTrue', () => {
+  describe('validateAllIfDirty', () => {
     it('returns a boolean', () => {
       const { result } = renderHook(() => useValidation(schema));
       let output: any;
       act(() => {
-        output = result.current.validateAllIfTrue(defaultState);
+        output = result.current.validateAllIfDirty(defaultState);
       });
       expect(typeof output).toBe('boolean');
     });
@@ -396,7 +403,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       let output: any;
       act(() => {
-        output = result.current.validateAllIfTrue(defaultState);
+        output = result.current.validateAllIfDirty(defaultState);
       });
       expect(output).toBe(true);
     });
@@ -404,7 +411,7 @@ describe('useValidation tests', () => {
     it('ignores failing validations', () => {
       const { result } = renderHook(() => useValidation(schema));
       act(() => {
-        const output = result.current.validateAllIfTrue(failingState);
+        const output = result.current.validateAllIfDirty(failingState);
         expect(output).toBe(true);
       });
     });
@@ -414,7 +421,7 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       let output: boolean[];
       act(() => {
-        output = data.map((s) => result.current.validateAllIfTrue(s));
+        output = data.map((s) => result.current.validateAllIfDirty(s));
         expect(output).toStrictEqual([true, true, true]);
       });
     });
@@ -422,11 +429,11 @@ describe('useValidation tests', () => {
     it('validates a subsection of keys', () => {
       const { result } = renderHook(() => useValidation(schema));
       act(() => {
-        result.current.validateAllIfTrue(failingState);
+        result.current.validateAllIfDirty(failingState);
       });
       expect(result.current.getError('age')).toBe('');
       act(() => {
-        result.current.validateAllIfTrue(failingState, ['name']);
+        result.current.validateAllIfDirty(failingState, ['name']);
       });
       expect(result.current.getError('age')).toBe('');
     });
@@ -443,13 +450,13 @@ describe('useValidation tests', () => {
       };
       const { result } = renderHook(() => useValidation(wonkySchema));
       act(() => {
-        result.current.validateAllIfTrue(failingState);
+        result.current.validateAllIfDirty(failingState);
       });
       expect(result.current.getError('canSave')).toBe('');
     });
   });
 
-  describe('validateIfTrue', () => {
+  describe('validateIfDirty', () => {
     it('returns a boolean if key exists', () => {
       const { result } = renderHook(() => useValidation(schema));
       let output: any;
@@ -459,7 +466,7 @@ describe('useValidation tests', () => {
         name: 'bob',
       };
       act(() => {
-        output = result.current.validateIfTrue(name, state);
+        output = result.current.validateIfDirty(name, state);
       });
       expect(typeof output).toBe('boolean');
     });
@@ -473,16 +480,13 @@ describe('useValidation tests', () => {
       };
       let output: any;
       act(() => {
-        output = result.current.validateIfTrue(name, state);
+        output = result.current.validateIfDirty(name, state);
       });
       expect(output).toBe(true);
     });
 
-    it('updates the validationState when validation fails', () => {
+    it('does not update the validationState when isDirty is false', () => {
       const { result } = renderHook(() => useValidation(schema));
-      const validationState = {
-        ...mockValidationState,
-      };
       const name = 'name';
       const state = {
         ...defaultState,
@@ -490,14 +494,21 @@ describe('useValidation tests', () => {
         dingo: true,
       };
       act(() => {
-        result.current.validateIfTrue(name, state);
+        result.current.validateIfDirty(name, state);
       });
       expect(result.current.isValid).toBe(true);
-      expect(result.current.validationState).toStrictEqual(validationState);
+      expect(result.current.validationState).toStrictEqual(mockValidationState);
     });
 
     it('updates the validationState when an invalid validation succeeds', () => {
       const { result } = renderHook(() => useValidation(schema));
+      const validationState = {
+        ...mockValidationState,
+        name: {
+          ...mockValidationState.name,
+          dirty: true
+        }
+      };
       const state = {
         ...defaultState,
         name: 'bob',
@@ -506,15 +517,12 @@ describe('useValidation tests', () => {
         ...defaultState,
         name: 'jack',
       };
-      const validationState = {
-        ...mockValidationState,
-      };
       act(() => {
         result.current.validate('name', state);
       });
       expect(result.current.isValid).toBe(false);
       act(() => {
-        result.current.validateIfTrue('name', state2);
+        result.current.validateIfDirty('name', state2);
       });
       expect(result.current.isValid).toBe(true);
       expect(result.current.validationState).toStrictEqual(validationState);

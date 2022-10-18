@@ -12,9 +12,9 @@ const useValidation = (validationSchema) => {
     const [isValid, setIsValid] = react_1.default.useState(true);
     const resetValidationState = () => setValidationState((0, base_1.createValidationState)(validationSchema));
     const validate = (0, base_1.createValidate)(validationSchema, validationState, setValidationState);
-    const validateIfTrue = (0, base_1.createValidateIfTrue)(validationSchema, validationState, setValidationState);
+    const validateIfDirty = (0, base_1.createValidateIfDirty)(validationSchema, validationState, setValidationState);
     const validateAll = (0, base_1.createValidateAll)(validationSchema, validationState, setValidationState);
-    const validateAllIfTrue = (0, base_1.createValidateAllIfTrue)(validationSchema, validationState, setValidationState);
+    const validateAllIfDirty = (0, base_1.createValidateAllIfDirty)(validationSchema, validationState, setValidationState);
     const validateOnBlur = (0, base_1.createValidateOnBlur)(validationSchema, validationState, setValidationState);
     const validateOnChange = (0, base_1.createValidateOnChange)(validationSchema, validationState, setValidationState);
     const getAllErrors = (0, base_1.createGetAllErrors)(validationState);
@@ -33,8 +33,8 @@ const useValidation = (validationSchema) => {
         setValidationState,
         validate,
         validateAll,
-        validateAllIfTrue,
-        validateIfTrue,
+        validateAllIfDirty,
+        validateIfDirty,
         validateOnBlur,
         validateOnChange,
         validationErrors,

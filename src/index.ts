@@ -6,8 +6,8 @@ import {
   createGetFieldValid,
   createValidate,
   createValidateAll,
-  createValidateAllIfTrue,
-  createValidateIfTrue,
+  createValidateAllIfDirty,
+  createValidateIfDirty,
   createValidateOnBlur,
   createValidateOnChange,
   createValidationState,
@@ -18,10 +18,11 @@ import {
   ResetValidationState,
   Validate,
   ValidateAll,
-  ValidateAllIfTrue,
-  ValidateIfTrue,
+  ValidateAllIfDirty,
+  ValidateIfDirty,
   ValidateOnBlur,
   ValidateOnChange,
+  ValidationObject,
   ValidationSchema,
   ValidationState,
 } from '@de-formed/base';
@@ -51,7 +52,7 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
     setValidationState,
   );
 
-  const validateIfTrue: ValidateIfTrue<S> = createValidateIfTrue(
+  const validateIfDirty: ValidateIfDirty<S> = createValidateIfDirty(
     validationSchema,
     validationState,
     setValidationState,
@@ -63,7 +64,7 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
     setValidationState,
   );
 
-  const validateAllIfTrue: ValidateAllIfTrue<S> = createValidateAllIfTrue(
+  const validateAllIfDirty: ValidateAllIfDirty<S> = createValidateAllIfDirty(
     validationSchema,
     validationState,
     setValidationState,
@@ -93,7 +94,7 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
     setIsValid(calculateIsValid(validationState));
   }, [validationState]);
 
-  const validationObject = {
+  const validationObject: ValidationObject<S> = {
     getAllErrors,
     getError,
     getFieldValid,
@@ -102,8 +103,8 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
     setValidationState,
     validate,
     validateAll,
-    validateAllIfTrue,
-    validateIfTrue,
+    validateAllIfDirty,
+    validateIfDirty,
     validateOnBlur,
     validateOnChange,
     validationErrors,
