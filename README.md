@@ -73,6 +73,8 @@ export const usePersonValidation = () => {
 };
 ```
 
+---
+
 ### Step 2: Use the hook anywhere.
 
 Bind the things you need; ignore the things you don't. De-Formed will take care of the rest.
@@ -122,6 +124,34 @@ export const PersonForm = ({ person, onChange }) => {
     </>
   );
 };
+```
+
+---
+
+## Validation Schema
+
+The validation schema is on object that defines a list of validation rules for
+any given key. Each validation rule consists of the `error` to display to a
+user and a function that returns true or false. Error messages can be passed a
+function to generate dynamic error messages depending on the state of the data.
+Keys that match the keys of an object will be automatically detected when using
+`validateAll`.
+
+```ts
+{
+  email: [
+    {
+      error: 'Email is required.',
+      validation: ({ email }) => email.trim().length > 0,
+    },
+    {
+    error: ({ email }) => `${email} must be a valid email.`,
+      validation: ({ email, name }) =>
+        name === 'bob ross' ? email === 'bob.ross@gmail.com' : true
+    },
+  ],
+}
+
 ```
 
 ---

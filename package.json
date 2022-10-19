@@ -1,6 +1,6 @@
 {
   "name": "@de-formed/react-validations",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Modular, Function-driven Validations",
   "main": "dist/index",
   "repository": "https://github.com/prescottbreeden/de-formed-validations-react.git",
