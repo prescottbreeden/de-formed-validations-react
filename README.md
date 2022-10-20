@@ -34,7 +34,7 @@ npm i @de-formed/react-validations
 
 ## Basic Usage
 
-### Step 1: Create a file to define your validations.
+### Step 1: Define a hook/schema for your validations
 
 ```ts
 // usePersonValidation.ts
@@ -47,26 +47,11 @@ export const usePersonValidation = () => {
         error: 'First Name is required.',
         validation: ({ firstName }) => firstName.length > 0,
       },
-      {
-        error: 'First Name cannot be longer than 20 characters.',
-        validation: ({ firstName }) => firstName.length <= 20,
-      },
     ],
     lastName: [
       {
         error: 'Last Name is required.',
         validation: ({ lastName }) => lastName.length > 0,
-      },
-      {
-        error: 'Last Name cannot be longer than 20 characters.',
-        validation: ({ lastName }) => lastName.length <= 20,
-      },
-      {
-        error: ({ lastName }) =>
-          `${lastName} must be Ross if fist name is Bob.`,
-        validation: ({ firstName, lastName }) => {
-          return firstName === 'Bob' ? lastName === 'Ross' : true;
-        },
       },
     ],
   });
