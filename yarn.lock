@@ -297,13 +297,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@de-formed/base@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@de-formed/base/-/base-4.1.1.tgz#a1b9ef0c6aa700112ec0a055b70f74f085863d18"
-  integrity sha512-jF98ZIe1dDSMU9wb1i+ZD7hd2/ZPHUDTjVjlVW6xZkT+YwKehp6zIbjv+M3wbuSt4XYD6lkv2hkBdYOxXoykiA==
-  dependencies:
-    "@types/lodash.startcase" "^4.4.7"
-    lodash.startcase "^4.4.0"
+"@de-formed/base@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@de-formed/base/-/base-4.1.2.tgz#43c10727fb41a44c5d7da7a53a734d0c79313735"
+  integrity sha512-VTCz7JjGcLwT3qRpVJvbx4O7wO16PnXm8JF53f8GcznZyVwfd2b2pa6dbewMgAe74FQj6CDlIj99YXU27W7gww==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -642,18 +639,6 @@
   dependencies:
     jest-matcher-utils "^27.0.0"
     pretty-format "^27.0.0"
-
-"@types/lodash.startcase@^4.4.7":
-  version "4.4.7"
-  resolved "https://registry.yarnpkg.com/@types/lodash.startcase/-/lodash.startcase-4.4.7.tgz#69857f17be0aa5ce74da4fa386e32e22c012258a"
-  integrity sha512-6v8FVOcfxdomO1Vammc1Zsah7/4aif/Lx16oQQ0WZmKVGF/Yf5c5m68LqI/ELOhKaKUr8KfnDdKrytdrThoRQw==
-  dependencies:
-    "@types/lodash" "*"
-
-"@types/lodash@*":
-  version "4.14.187"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.187.tgz#122ff0a7192115b4c1a19444ab4482caa77e2c9d"
-  integrity sha512-MrO/xLXCaUgZy3y96C/iOsaIqZSeupyTImKClHunL5GrmaiII2VwvWmLBu2hwa0Kp0sV19CsyjtrTc/Fx8rg/A==
 
 "@types/node@*":
   version "18.11.9"
@@ -2220,11 +2205,6 @@ lodash.memoize@4.x:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==
-
-lodash.startcase@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.startcase/-/lodash.startcase-4.4.0.tgz#9436e34ed26093ed7ffae1936144350915d9add8"
-  integrity sha512-+WKqsK294HMSc2jEbNgpHpd0JfIBhp7rEV4aqXWqFr6AlXov+SlcgB1Fv01y2kGe3Gc8nMW7VA0SrGuSkRfIEg==
 
 lodash@^4.7.0:
   version "4.17.21"
