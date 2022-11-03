@@ -16,6 +16,7 @@ import {
   GetError,
   GetFieldValid,
   ResetValidationState,
+  SchemaConfig,
   Validate,
   ValidateAll,
   ValidateAllIfDirty,
@@ -33,10 +34,17 @@ import {
  * @param validationSchema an object containing all properties to validate
  * @returns validationObject
  */
-export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
+export const useValidation = <S>(
+  validationSchema: ValidationSchema<S>,
+  config?: SchemaConfig,
+) => {
   // --[ local states ]--------------------------------------------------------
   const [validationState, setValidationState] = React.useState<ValidationState>(
-    () => createValidationState(validationSchema),
+    () =>
+      createValidationState({
+        validationSchema,
+        config,
+      }),
   );
   const [validationErrors, setValidationErrors] = React.useState<string[]>([]);
   const [isValid, setIsValid] = React.useState<boolean>(true);
@@ -44,43 +52,52 @@ export const useValidation = <S>(validationSchema: ValidationSchema<S>) => {
   // --[ validation logic ] ---------------------------------------------------
 
   const resetValidationState: ResetValidationState = () =>
-    setValidationState(createValidationState(validationSchema));
+    setValidationState(createValidationState({
+    validationSchema,
+    config
+  }));
 
-  const validate: Validate<S> = createValidate(
+  const validate: Validate<S> = createValidate({
+    config,
     validationSchema,
     validationState,
     setValidationState,
-  );
+  });
 
-  const validateIfDirty: ValidateIfDirty<S> = createValidateIfDirty(
+  const validateAll: ValidateAll<S> = createValidateAll({
+    config,
     validationSchema,
     validationState,
     setValidationState,
-  );
+  });
 
-  const validateAll: ValidateAll<S> = createValidateAll(
+  const validateAllIfDirty: ValidateAllIfDirty<S> = createValidateAllIfDirty({
+    config,
     validationSchema,
     validationState,
     setValidationState,
-  );
+  });
 
-  const validateAllIfDirty: ValidateAllIfDirty<S> = createValidateAllIfDirty(
+  const validateIfDirty: ValidateIfDirty<S> = createValidateIfDirty({
+    config,
     validationSchema,
     validationState,
     setValidationState,
-  );
+  });
 
-  const validateOnBlur: ValidateOnBlur<S> = createValidateOnBlur(
+  const validateOnBlur: ValidateOnBlur<S> = createValidateOnBlur({
+    config,
     validationSchema,
     validationState,
     setValidationState,
-  );
+  });
 
-  const validateOnChange: ValidateOnChange<S> = createValidateOnChange(
+  const validateOnChange: ValidateOnChange<S> = createValidateOnChange({
+    config,
     validationSchema,
     validationState,
     setValidationState,
-  );
+  });
 
   const getAllErrors: GetAllErrors<S> = createGetAllErrors(validationState);
 

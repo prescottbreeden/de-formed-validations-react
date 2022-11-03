@@ -119,11 +119,6 @@ describe('useValidation tests', () => {
       const { result } = renderHook(() => useValidation(schema));
       expect(result.current.validationState).toStrictEqual(mockValidationState);
     });
-
-    it('defaults to an empty object if undefined is provided', () => {
-      const { result } = renderHook(() => useValidation(undefined as any));
-      expect(result.current.validationState).toStrictEqual({});
-    });
   });
 
   describe('getError', () => {
