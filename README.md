@@ -21,6 +21,7 @@ De-Formed is a library for designing modular, event-driven form and data validat
 1. **Lightweight** - [compare it on bundlephobia](https://bundlephobia.com/package/@de-formed/react-validations)
 1. **Easy to Use** - its all functions
 1. **Easy to Test** - unit test your business logic
+1. **Yup Compatible** - can integrate with your existing yup schemas
 
 ## Install
 
@@ -137,6 +138,29 @@ Keys that match the keys of an object will be automatically detected when using
   ],
 }
 
+```
+
+---
+
+## Auto-Props
+
+Auto-props are functions that apply simple validation rules for strings and
+numbers.
+
+```ts
+type Person = {
+  name: string
+  age: number
+  agreement: boolean
+}
+
+const personValidation = () => {
+  return Validation<Person>({
+    name: [required(), shorterThan(12)],
+    age: [min(42), max(100)],
+    agreement: [is(true, 'Must accept terms.')],
+  })
+}
 ```
 
 ---

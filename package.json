@@ -19,7 +19,7 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "@de-formed/base": "^4.1.1"
+    "@de-formed/base": "^4.1.2"
   },
   "peerDependencies": {
     "react": ">=16.8.0"
